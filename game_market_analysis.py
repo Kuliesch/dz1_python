@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 """
-Аналіз ринку гемблінгу / iGaming
-================================
-Розділи:
-  1. Топ 10 ігрових (gambling) платформ / операторів
-  2. Макроринок online gambling (GGR)
-  3. Продуктові вертикалі та канали
-  4. Український ринок
-  5. Висновки
+Топ-20 B2B iGaming платформ і агрегаторів
+=========================================
+Список на кшталт Softswiss, Slotegrator — casino platform / game aggregator.
+Усе виводиться в таблицю (CSV + Markdown).
 
 Запуск:
   python game_market_analysis.py
@@ -17,643 +13,366 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 
 OUTPUT_DIR = Path("output")
 REPORT_PATH = Path("GAME_MARKET_REPORT.md")
+CSV_PATH = OUTPUT_DIR / "top20_platforms.csv"
 
-# Курс для EUR→USD у звіті (орієнтир 2025)
-EUR_USD = 1.08
-
-
-# ---------------------------------------------------------------------------
-# Розділ 1. Топ 10 gambling-операторів за виручкою 2025
-# ---------------------------------------------------------------------------
-# Джерела: company FY2025 / The iGaming EU / GamblingClub rankings.
-# Revenue = reported group revenue (не завжди = GGR).
-
-TOP10_OPERATORS = pd.DataFrame(
+# Топ-20: turnkey-платформи + game aggregators (B2B для операторів казино)
+TOP20 = pd.DataFrame(
     [
         {
-            "rank": 1,
-            "platform": "Flutter Entertainment",
-            "brands": "FanDuel, Paddy Power, Betfair, PokerStars, Sisal, Snai",
-            "category": "Sports + Casino",
-            "revenue_2025_bn_usd": 16.38,
-            "growth_yoy_pct": 17.0,
-            "players_metric": "15.9M Average Monthly Players",
-            "confidence": "high",
-            "source": "Flutter FY2025 / 10-K ($16.38B)",
-            "note": "Світовий №1 online operator; US (FanDuel) — ключовий драйвер росту",
+            "№": 1,
+            "Платформа": "SOFTSWISS",
+            "Тип": "Platform + Aggregator",
+            "Сайт": "https://www.softswiss.com",
+            "Ігри / студії": "40,000+ / 300+",
+            "Фокус": "Crypto + turnkey casino",
+            "Опис": (
+                "Повна casino-платформа (PAM, бонуси, платежі) + Game Aggregator. "
+                "Сильна в crypto з 2013, швидкий запуск (~1 міс.), є sportsbook і Affilka. "
+                "Один із лідерів ринку за нагородами Best Platform 2025–2026."
+            ),
         },
         {
-            "rank": 2,
-            "platform": "Allwyn",
-            "brands": "лотереї / multi-jurisdiction lottery",
-            "category": "Lottery",
-            "revenue_2025_bn_usd": round(8.99 * EUR_USD, 2),
-            "growth_yoy_pct": 4.0,
-            "players_metric": "lottery-led group (GGR ≈ revenue scale)",
-            "confidence": "high",
-            "source": "The iGaming EU 2025 ranking (€8.99B)",
-            "note": "Lottery-модель: великий top-line, інша економіка ніж sportsbook",
+            "№": 2,
+            "Платформа": "Slotegrator",
+            "Тип": "Aggregator + Turnkey",
+            "Сайт": "https://slotegrator.pro",
+            "Ігри / студії": "40,000+ / 180+",
+            "Фокус": "Швидкий запуск, emerging markets",
+            "Опис": (
+                "APIgrator — єдиний API для контенту; також turnkey/white-label, "
+                "Sportegrator, Moneygrator, Partnergrator. Популярний у SMB і CIS/LatAm/Africa. "
+                "Запуск часто 30–45 днів, допомога з ліцензіями (Anjouan, Curacao тощо)."
+            ),
         },
         {
-            "rank": 3,
-            "platform": "Entain",
-            "brands": "bwin, Coral, Ladbrokes, partypoker (+ BetMGM JV окремо)",
-            "category": "Sports + Casino",
-            "revenue_2025_bn_usd": round(6.31 * EUR_USD, 2),
-            "growth_yoy_pct": 3.0,
-            "players_metric": "UK/EU retail+online; US через BetMGM JV",
-            "confidence": "high",
-            "source": "Entain FY2025 / ranking (€6.31B; US часто окремо)",
-            "note": "Зрілий EU/UK портфель; зростання стримане vs US peers",
+            "№": 3,
+            "Платформа": "EveryMatrix",
+            "Тип": "Platform + Aggregator",
+            "Сайт": "https://everymatrix.com",
+            "Ігри / студії": "45,000+ / 355+",
+            "Фокус": "Регульовані ринки (UK, US, EU)",
+            "Опис": (
+                "Модульний стек: CasinoEngine, SlotMatrix (aggregator), OddsMatrix (sports), "
+                "GamMatrix (PAM), MoneyMatrix (payments), PartnerMatrix. "
+                "Найглибший каталог серед built-in агрегаторів; сильний compliance footprint."
+            ),
         },
         {
-            "rank": 4,
-            "platform": "DraftKings",
-            "brands": "DraftKings Sportsbook, Casino, DFS",
-            "category": "Sports + Casino",
-            "revenue_2025_bn_usd": 6.05,
-            "growth_yoy_pct": 27.0,
-            "players_metric": "US-focused; перший повний рік net profit",
-            "confidence": "high",
-            "source": "DraftKings FY2025 ($6.05B)",
-            "note": "Один із найшвидших серед топ-операторів; US sportsbook war",
+            "№": 4,
+            "Платформа": "SoftGamings",
+            "Тип": "Turnkey + Aggregator",
+            "Сайт": "https://www.softgamings.com",
+            "Ігри / студії": "16,000+ / —",
+            "Фокус": "White-label casino",
+            "Опис": (
+                "Довгограючий white-label/turnkey вендор (з 2007). "
+                "Агрегація ігор + платежі + sportsbook-фіди; підходить для classic, crypto і hybrid казино. "
+                "Один контракт на платформу й контент."
+            ),
         },
         {
-            "rank": 5,
-            "platform": "bet365",
-            "brands": "bet365",
-            "category": "Sports + Casino",
-            "revenue_2025_bn_usd": round(4.78 * EUR_USD, 2),
-            "growth_yoy_pct": 9.0,
-            "players_metric": "private; global sports-led brand",
-            "confidence": "high",
-            "source": "bet365 FY to Mar 2025 (~€4.78B / £4.04B)",
-            "note": "Найбільший приватний оператор; сильний in-play sportsbook",
+            "№": 5,
+            "Платформа": "BetConstruct",
+            "Тип": "Multi-vertical Platform",
+            "Сайт": "https://www.betconstruct.com",
+            "Ігри / студії": "6,500+ / —",
+            "Фокус": "Sportsbook + casino + retail",
+            "Опис": (
+                "SpringBME — широка платформа: sportsbook, casino, poker, skill games, "
+                "live studios, retail. Один вендор на весь продукт; популярний у emerging markets "
+                "і серед операторів, яким потрібен betting-led стек."
+            ),
         },
         {
-            "rank": 6,
-            "platform": "FDJ United",
-            "brands": "FDJ, Kindred assets (Unibet тощо)",
-            "category": "Lottery + Online",
-            "revenue_2025_bn_usd": round(3.68 * EUR_USD, 2),
-            "growth_yoy_pct": -3.0,
-            "players_metric": "France lottery core + international online",
-            "confidence": "high",
-            "source": "FDJ United FY2025 (€3.68B revenue; GGR вищий)",
-            "note": "На GGR виглядає більшим за revenue-line (lottery accounting)",
+            "№": 6,
+            "Платформа": "Hub88",
+            "Тип": "Standalone Aggregator",
+            "Сайт": "https://hub88.io",
+            "Ігри / студії": "26,000+ / 200+",
+            "Фокус": "Crypto / offshore content",
+            "Опис": (
+                "Незалежний aggregator з публічною API-документацією. "
+                "Ексклюзивний контент-партнер Stake.com; сильний seamless/transfer wallet, "
+                "HubWallet settlement. Ідеальний для crypto-first операторів."
+            ),
         },
         {
-            "rank": 7,
-            "platform": "Kaizen Gaming",
-            "brands": "Betano, Stoiximan",
-            "category": "Sports + Casino",
-            "revenue_2025_bn_usd": round(2.81 * EUR_USD, 2),
-            "growth_yoy_pct": 13.0,
-            "players_metric": "EU + LatAm (Brazil Betano)",
-            "confidence": "high",
-            "source": "The iGaming EU 2025 (€2.81B)",
-            "note": "Активна експансія в Бразилії та регульованих ринках",
+            "№": 7,
+            "Платформа": "Pariplay Fusion",
+            "Тип": "Standalone Aggregator",
+            "Сайт": "https://pariplaygames.com",
+            "Ігри / студії": "14,000+ / 150+",
+            "Фокус": "UK / US / regulated EU",
+            "Опис": (
+                "Агрегатор Aristocrat Interactive з глибоким ліцензійним покриттям "
+                "(UK, Malta, Gibraltar, кілька штатів США). Турніри/промо крос-вендорно; "
+                "сильний вибір для регульованих юрисдикцій."
+            ),
         },
         {
-            "rank": 8,
-            "platform": "BetMGM",
-            "brands": "BetMGM",
-            "category": "Sports + Casino",
-            "revenue_2025_bn_usd": 2.80,
-            "growth_yoy_pct": 33.0,
-            "players_metric": "US JV MGM × Entain; +EBITDA",
-            "confidence": "high",
-            "source": "BetMGM FY2025 (~$2.8B)",
-            "note": "Найшвидший ріст у топ-10; №3 у US sportsbook race",
+            "№": 8,
+            "Платформа": "Relax Gaming",
+            "Тип": "Aggregator + Studio",
+            "Сайт": "https://www.relax-gaming.com",
+            "Ігри / студії": "4,000+ / 70+",
+            "Фокус": "Curated content, regulated",
+            "Опис": (
+                "Гібрид: власна студія + агрегація (Silver Bullet / Powered By Relax). "
+                "Менший, але відібраний каталог; Dream Drop network jackpot. "
+                "Сильний у UK/EU/Ontario/US; частина групи FDJ United."
+            ),
         },
         {
-            "rank": 9,
-            "platform": "Lottomatica",
-            "brands": "Lottomatica / Italy retail+online",
-            "category": "Lottery + Online",
-            "revenue_2025_bn_usd": round(2.26 * EUR_USD, 2),
-            "growth_yoy_pct": 12.0,
-            "players_metric": "Italy-focused; GGR > reported revenue",
-            "confidence": "high",
-            "source": "Lottomatica FY2025 (€2.26B)",
-            "note": "Сильний домашній ринок Італії; hybrid retail/online",
+            "№": 9,
+            "Платформа": "Alea",
+            "Тип": "Standalone Aggregator",
+            "Сайт": "https://alea.com",
+            "Ігри / студії": "16,000+ / 250+",
+            "Фокус": "Brazil / LatAm / MGA",
+            "Опис": (
+                "Чистий B2B-агрегатор (колишній ALEA Play). MGA B2B ліцензія, "
+                "сильна позиція в Бразилії з day-one regulation. "
+                "Часто без мінімальних fees; зручний для mid-size операторів."
+            ),
         },
         {
-            "rank": 10,
-            "platform": "Super Group",
-            "brands": "Betway, Spin",
-            "category": "Sports + Casino",
-            "revenue_2025_bn_usd": 2.20,
-            "growth_yoy_pct": 22.0,
-            "players_metric": "multi-region online; Africa + Americas focus",
-            "confidence": "high",
-            "source": "Super Group FY2025 ($2.2B)",
-            "note": "Швидке зростання поза зрілою Європою",
+            "№": 10,
+            "Платформа": "Bragg Gaming",
+            "Тип": "Aggregator + PAM",
+            "Сайт": "https://bragg.group",
+            "Ігри / студії": "15,000+ / 120+",
+            "Фокус": "US / Canada / regulated",
+            "Опис": (
+                "Hub-агрегація + proprietary content + опційний PAM (Fuze). "
+                "Клієнти рівня Caesars, BetMGM, DraftKings, bet365. "
+                "Підходить, коли потрібні ліцензований pipe і exclusive titles."
+            ),
+        },
+        {
+            "№": 11,
+            "Платформа": "NuxGame",
+            "Тип": "Turnkey + Aggregator",
+            "Сайт": "https://nuxgame.com",
+            "Ігри / студії": "17,500+ / 140+",
+            "Фокус": "Crypto turnkey",
+            "Опис": (
+                "API-first turnkey для crypto/offshore: 25+ монет, Web3-гаманці (MetaMask тощо). "
+                "Агрегація + платежі + affiliate. Швидкий шлях для crypto-казино з одним вендором."
+            ),
+        },
+        {
+            "№": 12,
+            "Платформа": "Digitain",
+            "Тип": "Platform + Sportsbook",
+            "Сайт": "https://digitain.com",
+            "Ігри / студії": "широкий каталог / 100+",
+            "Фокус": "Sportsbook + casino stack",
+            "Опис": (
+                "Повний iGaming-стек: sportsbook, casino aggregation, payments, back office, "
+                "live casino. Сильний у betting-операторів CIS/Asia/LatAm; "
+                "turnkey і API-інтеграції."
+            ),
+        },
+        {
+            "№": 13,
+            "Платформа": "Pragmatic Solutions",
+            "Тип": "PAM / Full Platform",
+            "Сайт": "https://pragmatic.solutions",
+            "Ігри / студії": "через інтеграції провайдерів",
+            "Фокус": "Enterprise PAM, regulated",
+            "Опис": (
+                "Enterprise Player Account Management і full-service platform. "
+                "Орієнтований на масштабовані регульовані операції; "
+                "часто обирають поруч із контентом Pragmatic Play / tier-1 студій."
+            ),
+        },
+        {
+            "№": 14,
+            "Платформа": "St8",
+            "Тип": "Standalone Aggregator",
+            "Сайт": "https://st8.io",
+            "Ігри / студії": "19,000+ / 200+",
+            "Фокус": "Engineering-led API",
+            "Опис": (
+                "Сучасний aggregator з публічними API docs, Bonus API, jackpot tools, "
+                "CI-тестуванням (TARS). Ліцензії UKGC/SGA/AGCO — для tech-команд, "
+                "які хочуть self-serve інтеграцію, а не vendor-managed onboarding."
+            ),
+        },
+        {
+            "№": 15,
+            "Платформа": "GR8 Tech",
+            "Тип": "Platform + Aggregator",
+            "Сайт": "https://gr8.tech",
+            "Ігри / студії": "casino aggregation module",
+            "Фокус": "Sportsbook-first + casino",
+            "Опис": (
+                "Sportsbook-led платформа з окремим casino aggregation модулем (GR8 Casino). "
+                "Підходить betting-операторам, яким потрібен сильний sports core "
+                "і контент казино в одному стеку."
+            ),
+        },
+        {
+            "№": 16,
+            "Платформа": "White Hat Gaming",
+            "Тип": "PAM + Aggregator",
+            "Сайт": "https://www.whitehat-gaming.com",
+            "Ігри / студії": "3,000+ / 130+",
+            "Фокус": "UK / Malta / Ontario / US",
+            "Опис": (
+                "Регульований PAM + wallet + aggregation + payments + engagement. "
+                "Менший каталог, але глибока сертифікація для tier-1 юрисдикцій. "
+                "Орієнтир — compliance, не «найбільше ігор»."
+            ),
+        },
+        {
+            "№": 17,
+            "Платформа": "Light & Wonder OpenGaming",
+            "Тип": "RGS / Aggregation Network",
+            "Сайт": "https://www.lnw.com",
+            "Ігри / студії": "6,500+ / 60+",
+            "Фокус": "US / UK / Ontario regulated",
+            "Опис": (
+                "OpenGaming Platform — мережа L&W + third-party studios через RGS. "
+                "Власні хіти (напр. Huff N' Puff тощо) + live в регульованих ринках. "
+                "Вибір, коли важливі сертифікації, а не максимальний volume каталогу."
+            ),
+        },
+        {
+            "№": 18,
+            "Платформа": "IGT PlayDigital",
+            "Тип": "RGS + Aggregation",
+            "Сайт": "https://www.igt.com",
+            "Ігри / студії": "10,000+ / 120+",
+            "Фокус": "US / UK regulated",
+            "Опис": (
+                "PlayRGS + third-party aggregation для операторів, які вже беруть IGT-контент. "
+                "Покриття всіх US iGaming штатів; engagement/retention tools у пакеті. "
+                "Enterprise-рівень для North America."
+            ),
+        },
+        {
+            "№": 19,
+            "Платформа": "REEVO",
+            "Тип": "Aggregator + Studio",
+            "Сайт": "https://reevo.com",
+            "Ігри / студії": "20,000+ / 100+",
+            "Фокус": "EU / LatAm, hybrid content",
+            "Опис": (
+                "Власна slot-студія (~100 titles) + великий third-party каталог через один API. "
+                "MGA B2B; зростає в Southern Europe і LatAm. "
+                "Зручно, коли потрібні і exclusive in-house, і volume aggregation."
+            ),
+        },
+        {
+            "№": 20,
+            "Платформа": "LuckyStreak",
+            "Тип": "Live + Aggregator",
+            "Сайт": "https://www.luckystreak.com",
+            "Ігри / студії": "6,000+ / —",
+            "Фокус": "Live dealer + aggregation",
+            "Опис": (
+                "Live-студія в Ризі + LuckyConnect aggregation API. "
+                "Один seamless wallet на власні live-столи і third-party slots/crash. "
+                "Підходить offshore / sweeps операторам, яким важливий live-продукт."
+            ),
         },
     ]
 )
-
-
-# ---------------------------------------------------------------------------
-# Розділ 2. Макроринок (online GGR)
-# ---------------------------------------------------------------------------
-
-MARKET_HISTORY = pd.DataFrame(
-    {
-        "year": [2021, 2022, 2023, 2024, 2025, 2026],
-        "ggr_bn_usd": [72.0, 82.0, 92.0, 98.0, 108.0, 121.0],
-        "note": [
-            "post-COVID digital shift",
-            "US sportsbook ramp",
-            "регульоване зростання",
-            "консолідація",
-            "факт / оцінка Track360",
-            "прогноз ~+12% YoY",
-        ],
-    }
-)
-
-VERTICALS = pd.DataFrame(
-    {
-        "vertical": ["Online Casino", "Sports Betting", "Poker", "Bingo / Other"],
-        "share_pct": [52.0, 35.0, 7.0, 6.0],
-        "ggr_2026_bn": [63.0, 42.5, 8.1, 6.9],
-    }
-)
-
-CHANNELS = pd.DataFrame(
-    {
-        "channel": ["Mobile", "Desktop / Other"],
-        "share_pct": [72.0, 28.0],
-    }
-)
-
-REGULATION = pd.DataFrame(
-    {
-        "segment": ["Regulated", "Grey / Unregulated"],
-        "share_pct": [68.0, 32.0],
-        "ggr_2026_bn": [82.7, 38.3],
-    }
-)
-
-REGIONS = pd.DataFrame(
-    {
-        "region": ["Europe", "North America (US-led)", "Asia-Pacific", "LatAm", "Africa / Other"],
-        "ggr_2026_bn": [43.5, 32.0, 22.0, 12.0, 11.5],
-        "note": [
-            "найбільший регіон ~36%",
-            "US online ~$27.4B у 2025",
-            "мікс regulated + grey",
-            "Brazil ramp ~+$4.5B",
-            "швидке, але менше базою",
-        ],
-    }
-)
-
-# Україна: онлайн-казино (YouControl / PlayCity), млрд грн
-UA_MARKET = pd.DataFrame(
-    {
-        "year": [2024, 2025],
-        "online_casino_revenue_uah_bn": [42.0, 45.5],
-        "growth_yoy_pct": [None, 8.0],
-    }
-)
-
-UA_SNAPSHOT = {
-    "licensed_casinos_registry": 30,
-    "licenses_annulled": 8,
-    "licenses_suspended": 2,
-    "budget_2025_uah_bn": 19.0,
-    "blocked_illegal_sites": 3500,
-    "regulator": "PlayCity",
-    "top_2024_brand": "Favbet (~21.2 млрд грн виручки у 2024)",
-}
 
 
 def ensure_output_dir() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def compute_top10_metrics(df: pd.DataFrame) -> dict:
-    total = float(df["revenue_2025_bn_usd"].sum())
-    top3 = float(df.head(3)["revenue_2025_bn_usd"].sum())
-    fastest = df.loc[df["growth_yoy_pct"].idxmax()]
-    sports_casino = df[df["category"] == "Sports + Casino"]
-    return {
-        "total": total,
-        "top3_share": top3 / total * 100.0,
-        "fastest": fastest,
-        "sports_casino_n": int(len(sports_casino)),
-        "sports_casino_rev": float(sports_casino["revenue_2025_bn_usd"].sum()),
-        "avg_growth": float(df["growth_yoy_pct"].mean()),
-    }
-
-
-def compute_market_metrics() -> dict:
-    ggr_2025 = float(MARKET_HISTORY.loc[MARKET_HISTORY["year"] == 2025, "ggr_bn_usd"].iloc[0])
-    ggr_2026 = float(MARKET_HISTORY.loc[MARKET_HISTORY["year"] == 2026, "ggr_bn_usd"].iloc[0])
-    yoy = (ggr_2026 / ggr_2025 - 1.0) * 100.0
-    hist = MARKET_HISTORY.set_index("year")["ggr_bn_usd"]
-    years = hist.index.max() - hist.index.min()
-    cagr = (hist.iloc[-1] / hist.iloc[0]) ** (1 / years) - 1
-    return {
-        "ggr_2025": ggr_2025,
-        "ggr_2026": ggr_2026,
-        "yoy": yoy,
-        "cagr": cagr * 100.0,
-        "largest_vertical": VERTICALS.loc[VERTICALS["share_pct"].idxmax()],
-        "largest_region": REGIONS.loc[REGIONS["ggr_2026_bn"].idxmax()],
-    }
-
-
-# ---------------------------------------------------------------------------
-# Візуалізації
-# ---------------------------------------------------------------------------
-
-def plot_top10(df: pd.DataFrame) -> Path:
-    fig, ax = plt.subplots(figsize=(11, 6.5))
-    colors = {
-        "Sports + Casino": "#1f6f8b",
-        "Lottery": "#f18f01",
-        "Lottery + Online": "#c44536",
-    }
-    bar_colors = [colors.get(c, "#666666") for c in df["category"]]
-    y = np.arange(len(df))[::-1]
-    bars = ax.barh(y, df["revenue_2025_bn_usd"], color=bar_colors)
-    ax.set_yticks(y)
-    ax.set_yticklabels([f"#{r}  {p}" for r, p in zip(df["rank"], df["platform"])])
-    ax.set_xlabel("Revenue 2025, млрд USD")
-    ax.set_title("Розділ 1. Топ 10 gambling-операторів за виручкою")
-    ax.grid(axis="x", alpha=0.3)
-
-    for bar, growth in zip(bars, df["growth_yoy_pct"]):
-        w = bar.get_width()
-        ax.annotate(
-            f"${w:.1f}B  ({growth:+.0f}%)",
-            xy=(w, bar.get_y() + bar.get_height() / 2),
-            xytext=(4, 0),
-            textcoords="offset points",
-            va="center",
-            fontsize=8,
-        )
-
-    handles = [
-        plt.Rectangle((0, 0), 1, 1, color=c)
-        for c in (colors["Sports + Casino"], colors["Lottery"], colors["Lottery + Online"])
-    ]
-    ax.legend(handles, ["Sports + Casino", "Lottery", "Lottery + Online"], loc="lower right")
-    path = OUTPUT_DIR / "top10_operators_revenue.png"
-    fig.tight_layout()
-    fig.savefig(path, dpi=140)
-    plt.close(fig)
-    return path
-
-
-def plot_top10_growth(df: pd.DataFrame) -> Path:
-    ordered = df.sort_values("growth_yoy_pct", ascending=True)
-    fig, ax = plt.subplots(figsize=(10, 5.5))
-    colors = ["#c44536" if g < 0 else "#99c24d" for g in ordered["growth_yoy_pct"]]
-    ax.barh(ordered["platform"], ordered["growth_yoy_pct"], color=colors)
-    ax.axvline(0, color="#333333", linewidth=0.8)
-    ax.set_xlabel("YoY growth, %")
-    ax.set_title("Топ 10: темпи зростання виручки 2025")
-    ax.grid(axis="x", alpha=0.3)
-    path = OUTPUT_DIR / "top10_operators_growth.png"
-    fig.tight_layout()
-    fig.savefig(path, dpi=140)
-    plt.close(fig)
-    return path
-
-
-def plot_market_history(df: pd.DataFrame) -> Path:
-    fig, ax = plt.subplots(figsize=(9, 5))
-    ax.plot(df["year"], df["ggr_bn_usd"], marker="o", color="#1f6f8b", linewidth=2)
-    ax.fill_between(df["year"], df["ggr_bn_usd"], alpha=0.15, color="#1f6f8b")
-    ax.set_xlabel("Рік")
-    ax.set_ylabel("Online GGR, млрд USD")
-    ax.set_title("Глобальний online gambling GGR")
-    ax.grid(alpha=0.3)
+def dataframe_to_markdown_table(df: pd.DataFrame) -> str:
+    """Проста markdown-таблиця без залежності від tabulate."""
+    cols = list(df.columns)
+    header = "| " + " | ".join(cols) + " |"
+    sep = "| " + " | ".join("---" for _ in cols) + " |"
+    rows = []
     for _, row in df.iterrows():
-        ax.annotate(
-            f"{row['ggr_bn_usd']:.0f}",
-            (row["year"], row["ggr_bn_usd"]),
-            textcoords="offset points",
-            xytext=(0, 8),
-            ha="center",
-            fontsize=8,
-        )
-    path = OUTPUT_DIR / "market_ggr_history.png"
-    fig.tight_layout()
-    fig.savefig(path, dpi=140)
-    plt.close(fig)
-    return path
+        cells = [str(row[c]).replace("|", "\\|").replace("\n", " ") for c in cols]
+        rows.append("| " + " | ".join(cells) + " |")
+    return "\n".join([header, sep, *rows])
 
 
-def plot_verticals(df: pd.DataFrame) -> Path:
-    fig, ax = plt.subplots(figsize=(7, 7))
-    colors = ["#1f6f8b", "#99c24d", "#f18f01", "#c44536"]
-    ax.pie(
-        df["share_pct"],
-        labels=df["vertical"],
-        autopct="%1.0f%%",
-        colors=colors,
-        startangle=90,
-        wedgeprops=dict(width=0.45, edgecolor="white"),
-    )
-    ax.set_title("Вертикалі online gambling (частка GGR)")
-    path = OUTPUT_DIR / "verticals_share.png"
-    fig.tight_layout()
-    fig.savefig(path, dpi=140)
-    plt.close(fig)
-    return path
+def build_report(df: pd.DataFrame) -> str:
+    # Коротка таблиця без довгого опису — зручно сканувати
+    summary = df[["№", "Платформа", "Тип", "Ігри / студії", "Фокус", "Сайт"]].copy()
+    # Повна таблиця з описом
+    full = df[["№", "Платформа", "Тип", "Фокус", "Ігри / студії", "Опис", "Сайт"]].copy()
 
-
-def plot_regions(df: pd.DataFrame) -> Path:
-    fig, ax = plt.subplots(figsize=(9, 5))
-    ax.bar(df["region"], df["ggr_2026_bn"], color="#1f6f8b")
-    ax.set_ylabel("GGR 2026, млрд USD")
-    ax.set_title("Online gambling за регіонами (орієнтир 2026)")
-    ax.tick_params(axis="x", rotation=20)
-    ax.grid(axis="y", alpha=0.3)
-    for _, row in df.iterrows():
-        ax.annotate(
-            f"{row['ggr_2026_bn']:.1f}",
-            (row["region"], row["ggr_2026_bn"]),
-            textcoords="offset points",
-            xytext=(0, 4),
-            ha="center",
-            fontsize=8,
-        )
-    path = OUTPUT_DIR / "regions_ggr.png"
-    fig.tight_layout()
-    fig.savefig(path, dpi=140)
-    plt.close(fig)
-    return path
-
-
-def plot_ua_market(df: pd.DataFrame) -> Path:
-    fig, ax = plt.subplots(figsize=(7, 5))
-    ax.bar(df["year"].astype(str), df["online_casino_revenue_uah_bn"], color="#1f6f8b")
-    ax.set_ylabel("Виручка онлайн-казино, млрд грн")
-    ax.set_title("Україна: виручка ліцензованих онлайн-казино")
-    ax.grid(axis="y", alpha=0.3)
-    for _, row in df.iterrows():
-        ax.annotate(
-            f"{row['online_casino_revenue_uah_bn']:.1f}",
-            (str(row["year"]), row["online_casino_revenue_uah_bn"]),
-            textcoords="offset points",
-            xytext=(0, 4),
-            ha="center",
-        )
-    path = OUTPUT_DIR / "ua_online_casino.png"
-    fig.tight_layout()
-    fig.savefig(path, dpi=140)
-    plt.close(fig)
-    return path
-
-
-# ---------------------------------------------------------------------------
-# Звіт
-# ---------------------------------------------------------------------------
-
-def build_report(top10: dict, market: dict, charts: list[Path]) -> str:
-    fastest = top10["fastest"]
     lines = [
-        "# Аналіз ринку гемблінгу (iGaming)",
+        "# Топ-20 B2B iGaming платформ і агрегаторів",
         "",
-        "*Звіт згенеровано скриптом `game_market_analysis.py`.*",
+        "Список платформ типу **Softswiss**, **Slotegrator** — "
+        "casino platform / game aggregator для запуску або наповнення онлайн-казино.",
         "",
-        "## Розділ 1. Топ 10 ігрових платформ (gambling-оператори)",
+        "## Коротка таблиця",
         "",
-        "Ранжування за **group revenue 2025** (не GGR). "
-        "Бренди в дужках — ключові продукти оператора.",
+        dataframe_to_markdown_table(summary),
         "",
-        f"- Сума топ-10: **${top10['total']:.1f}B** revenue",
-        f"- Частка топ-3: **{top10['top3_share']:.0f}%** від суми топ-10",
-        f"- Sports+Casino брендів у списку: **{top10['sports_casino_n']}** "
-        f"(${top10['sports_casino_rev']:.1f}B)",
-        f"- Найшвидший ріст: **{fastest['platform']}** "
-        f"(+{fastest['growth_yoy_pct']:.0f}% YoY)",
-        f"- Середній YoY по топ-10: **{top10['avg_growth']:+.1f}%**",
+        "## Повна таблиця з описами",
         "",
-        "| # | Оператор | Бренди | Категорія | Revenue 2025 | YoY |",
-        "|---|----------|--------|-----------|--------------|-----|",
-    ]
-
-    for _, row in TOP10_OPERATORS.iterrows():
-        rev = f"${row['revenue_2025_bn_usd']:.2f}".rstrip("0").rstrip(".") + "B"
-        lines.append(
-            f"| {row['rank']} | **{row['platform']}** | {row['brands']} | "
-            f"{row['category']} | {rev} | {row['growth_yoy_pct']:+.0f}% |"
-        )
-
-    lines += ["", "### Профілі", ""]
-    for _, row in TOP10_OPERATORS.iterrows():
-        lines.append(
-            f"**{row['rank']}. {row['platform']}** — {row['note']} "
-            f"Аудиторія/масштаб: {row['players_metric']}. "
-            f"Джерело: {row['source']}."
-        )
-        lines.append("")
-
-    lines += [
-        "### Інсайти розділу 1",
+        dataframe_to_markdown_table(full),
         "",
-        "1. **Flutter домінує з відривом** (~$16.4B) — майже як DraftKings + Entain разом.",
-        "2. **Найшвидше ростуть US-бренди**: BetMGM (+33%), DraftKings (+27%), "
-        "плюс Super Group (+22%) поза зрілою Європою.",
-        "3. **Lottery-оператори (Allwyn, FDJ, Lottomatica)** на revenue-line виглядають "
-        "інакше, ніж на GGR — для apples-to-apples порівнюйте GGR окремо.",
-        "4. **Консолідація триває**: топ-оператори забирають дедалі більшу частку "
-        "регульованого GGR (Track360: top-10 ~42% regulated GGR).",
-        "5. Для України релевантні не глобальні гіганти напряму, а **локальні ліцензовані "
-        "бренди** + B2B (Evolution тощо) як постачальники контенту.",
+        "## Легенда типів",
         "",
-        "![top10_operators_revenue](output/top10_operators_revenue.png)",
+        "| Тип | Що означає |",
+        "|-----|------------|",
+        "| Platform + Aggregator | Повний стек казино + модуль агрегації ігор |",
+        "| Aggregator + Turnkey | Акцент на API контенту + пакети white-label/turnkey |",
+        "| Standalone Aggregator | Незалежний content hub (підключається до вашого PAM) |",
+        "| Multi-vertical Platform | Casino + sportsbook + інші вертикалі в одному продукті |",
+        "| PAM / Full Platform | Player Account Management і операційний backend |",
+        "| RGS / Aggregation Network | Remote Game Server + мережа студій (часто regulated) |",
         "",
-        "![top10_operators_growth](output/top10_operators_growth.png)",
+        "## Примітки",
         "",
-        "---",
+        "- Порядок — орієнтовний shortlist ринку (видимість, покриття, зрілість), "
+        "не офіційний рейтинг за виручкою: більшість B2B не публікує rate card / GGR.",
+        "- Цифри ігор/студій — заявлені вендорами / галузеві огляди 2025–2026; "
+        "у каталозі можуть дублюватися title’и між студіями.",
+        "- Перед вибором перевіряйте ліцензії під конкретні юрисдикції (UKGC, MGA, US states, Brazil тощо).",
         "",
-        "## Розділ 2. Макроринок online gambling",
-        "",
-        f"- **2025 GGR:** ~**${market['ggr_2025']:.0f}B**",
-        f"- **2026 GGR (прогноз):** ~**${market['ggr_2026']:.0f}B** "
-        f"(+{market['yoy']:.0f}% YoY)",
-        f"- **CAGR 2021–2026:** ~**{market['cagr']:.1f}%**",
-        f"- Найбільша вертикаль: **{market['largest_vertical']['vertical']}** "
-        f"({market['largest_vertical']['share_pct']:.0f}%)",
-        f"- Найбільший регіон: **{market['largest_region']['region']}** "
-        f"(~${market['largest_region']['ggr_2026_bn']:.1f}B)",
-        "",
-        "- Регульований ринок: **~68%** GGR",
-        "- Mobile: **~72%** online revenue",
-        "- США — найбільша країна (~$27.4B online GGR у 2025)",
-        "- LatAm — найшвидший великий регіон (Brazil regulated ramp)",
-        "",
-        "![market_ggr_history](output/market_ggr_history.png)",
-        "",
-        "![regions_ggr](output/regions_ggr.png)",
-        "",
-        "---",
-        "",
-        "## Розділ 3. Вертикалі та канали",
-        "",
-        "| Вертикаль | Частка GGR | GGR 2026 (орієнтир) |",
-        "|-----------|------------|---------------------|",
-    ]
-    for _, row in VERTICALS.iterrows():
-        lines.append(
-            f"| {row['vertical']} | {row['share_pct']:.0f}% | ${row['ggr_2026_bn']:.1f}B |"
-        )
-
-    lines += [
-        "",
-        "| Канал | Частка |",
-        "|-------|--------|",
-    ]
-    for _, row in CHANNELS.iterrows():
-        lines.append(f"| {row['channel']} | {row['share_pct']:.0f}% |")
-
-    lines += [
-        "",
-        "| Регуляція | Частка | GGR 2026 |",
-        "|-----------|--------|----------|",
-    ]
-    for _, row in REGULATION.iterrows():
-        lines.append(
-            f"| {row['segment']} | {row['share_pct']:.0f}% | ${row['ggr_2026_bn']:.1f}B |"
-        )
-
-    lines += [
-        "",
-        "![verticals_share](output/verticals_share.png)",
-        "",
-        "---",
-        "",
-        "## Розділ 4. Український ринок",
-        "",
-        f"- Регулятор: **{UA_SNAPSHOT['regulator']}** (замість КРАІЛ).",
-        f"- Виручка ліцензованих онлайн-казино **2025:** "
-        f"**{UA_MARKET.loc[UA_MARKET['year'] == 2025, 'online_casino_revenue_uah_bn'].iloc[0]:.1f} млрд грн** "
-        f"(+8% vs 2024 / 42 млрд грн) — YouControl.",
-        f"- У реєстрі: **{UA_SNAPSHOT['licensed_casinos_registry']}** онлайн-казино; "
-        f"анульовано **{UA_SNAPSHOT['licenses_annulled']}**, призупинено "
-        f"**{UA_SNAPSHOT['licenses_suspended']}**.",
-        f"- До бюджету 2025: ~**{UA_SNAPSHOT['budget_2025_uah_bn']:.0f} млрд грн** "
-        f"(ліцензії + податки + лотереї).",
-        f"- Заблоковано **>{UA_SNAPSHOT['blocked_illegal_sites']}** нелегальних сайтів.",
-        f"- Орієнтир лідера 2024: {UA_SNAPSHOT['top_2024_brand']}.",
-        "",
-        "Ринок стабілізується після бурхливої легалізації: нових ліцензій у 2025 мало (2), "
-        "акцент зміщується на контроль, блокування сірого ринку та цифрові ліцензії.",
-        "",
-        "![ua_online_casino](output/ua_online_casino.png)",
-        "",
-        "---",
-        "",
-        "## Розділ 5. Висновки",
-        "",
-        "1. **Глобальний online gambling ~$108→$121B GGR** — зростання двознакове, "
-        "драйвери: US, Brazil, mobile.",
-        "2. **Топ-платформи = Flutter / Allwyn / Entain / DraftKings / bet365**; "
-        "швидкість росту вища в US і emerging markets.",
-        "3. **Casino лишається найбільшою вертикаллю**, sports betting — найдинамічніша "
-        "в нових юрисдикціях.",
-        "4. **Україна** — регульований, але ще консолідаційний ринок (~45.5 млрд грн "
-        "онлайн-казино); compliance і боротьба з нелегалами — головна тема 2026.",
-        "5. Можливості: ліцензований product + localized payments; ризики — регуляторний "
-        "тиск, advertising bans, санкційні списки.",
-        "",
-        "## Усі графіки",
-        "",
-    ]
-    for p in charts:
-        lines.append(f"![{p.stem}]({p.as_posix()})")
-        lines.append("")
-
-    lines += [
         "## Джерела",
         "",
-        "- [Track360 — Online Gambling Statistics 2026](https://track360.io/blog/online-gambling-statistics-2026-global-market-data)",
-        "- [Track360 — iGaming Q1 2026 / top operators](https://track360.io/blog/igaming-industry-statistics-q1-2026-report)",
-        "- [The iGaming EU — 2025 revenue ranking](https://theigaming.eu/2026/04/12/2025-gambling-revenue-15-largest-companies-ranked/)",
-        "- [GamblingClub — top companies 2025](https://gamblingclub.be/en/flutter-remains-worlds-largest-gambling-company/)",
-        "- Flutter Entertainment FY2025 / 10-K",
-        "- [YouControl / Fair — онлайн-казино України 2025](https://www.fair.org.ua/eksperty-ozvuchyly-dani-shhodo-zrostannya-rynku-igaming-v-ukrayini/)",
-        "- PlayCity / Delo.ua — бюджет і блокування нелегалів 2025",
+        "- [Partnerkin — 20 Casino Game Aggregators](https://partnerkin.com/en/b2b/casino-games-aggregators/)",
+        "- [Track360 — SoftSwiss vs EveryMatrix vs Slotegrator](https://track360.io/blog/softswiss-vs-everymatrix-vs-slotegrator-operator-comparison-2026)",
+        "- Сайти вендорів: Softswiss, Slotegrator, EveryMatrix, Hub88, Alea, Relax Gaming тощо",
         "",
-        "> Примітка: **Revenue ≠ GGR**. Lottery-оператори часто мають вищий GGR "
-        "за нижчий net revenue. Цифри сірих ринків — оцінки.",
+        f"CSV: `{CSV_PATH.as_posix()}`",
         "",
     ]
     return "\n".join(lines)
 
 
-def print_summary(top10: dict, market: dict) -> None:
-    print("=" * 68)
-    print(" АНАЛІЗ РИНКУ ГЕМБЛІНГУ (iGaming)")
-    print("=" * 68)
-    print("\nРозділ 1. Топ 10 операторів (revenue 2025):")
-    for _, row in TOP10_OPERATORS.iterrows():
-        print(
-            f"  {row['rank']:>2}. {row['platform']:<24} "
-            f"${row['revenue_2025_bn_usd']:>5.1f}B  "
-            f"({row['growth_yoy_pct']:+.0f}%)  [{row['category']}]"
-        )
-    print(
-        f"\n  Σ топ-10: ${top10['total']:.1f}B | "
-        f"топ-3: {top10['top3_share']:.0f}% | "
-        f"avg YoY: {top10['avg_growth']:+.1f}%"
-    )
-    print(
-        f"\nМакроринок online GGR: "
-        f"${market['ggr_2025']:.0f}B (2025) → "
-        f"${market['ggr_2026']:.0f}B (2026, +{market['yoy']:.0f}%)"
-    )
-    print(
-        f"Україна онлайн-казино 2025: "
-        f"{UA_MARKET.loc[UA_MARKET['year'] == 2025, 'online_casino_revenue_uah_bn'].iloc[0]:.1f} млрд грн (+8%)"
-    )
-    print("=" * 68)
-
-
 def main() -> None:
     ensure_output_dir()
-    # Прибрати артефакти старого video-games аналізу
+    # Прибрати старі артефакти іншого формату звіту
     for stale in OUTPUT_DIR.glob("*"):
-        if stale.suffix in {".png", ".csv"}:
+        if stale.is_file():
             stale.unlink()
 
-    top10 = compute_top10_metrics(TOP10_OPERATORS)
-    market = compute_market_metrics()
+    TOP20.to_csv(CSV_PATH, index=False, encoding="utf-8")
+    report = build_report(TOP20)
+    REPORT_PATH.write_text(report, encoding="utf-8")
 
-    charts = [
-        plot_top10(TOP10_OPERATORS),
-        plot_top10_growth(TOP10_OPERATORS),
-        plot_market_history(MARKET_HISTORY),
-        plot_verticals(VERTICALS),
-        plot_regions(REGIONS),
-        plot_ua_market(UA_MARKET),
-    ]
-
-    REPORT_PATH.write_text(build_report(top10, market, charts), encoding="utf-8")
-    TOP10_OPERATORS.to_csv(OUTPUT_DIR / "top10_operators.csv", index=False)
-    MARKET_HISTORY.to_csv(OUTPUT_DIR / "market_ggr_history.csv", index=False)
-    VERTICALS.to_csv(OUTPUT_DIR / "verticals.csv", index=False)
-    REGIONS.to_csv(OUTPUT_DIR / "regions.csv", index=False)
-    UA_MARKET.to_csv(OUTPUT_DIR / "ua_market.csv", index=False)
-
-    print_summary(top10, market)
-    print(f"\nЗвіт:    {REPORT_PATH}")
-    for p in charts:
-        print(f"  - {p}")
+    print("=" * 72)
+    print(" ТОП-20 B2B iGaming ПЛАТФОРМ / АГРЕГАТОРІВ")
+    print("=" * 72)
+    print(
+        TOP20[["№", "Платформа", "Тип", "Фокус"]]
+        .to_string(index=False)
+    )
+    print("=" * 72)
+    print(f"\nТаблиця (MD):  {REPORT_PATH}")
+    print(f"Таблиця (CSV): {CSV_PATH}")
 
 
 if __name__ == "__main__":

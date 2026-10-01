@@ -1,153 +1,78 @@
-# Аналіз ринку гемблінгу (iGaming)
+# Топ-20 B2B iGaming платформ і агрегаторів
 
-*Звіт згенеровано скриптом `game_market_analysis.py`.*
+Список платформ типу **Softswiss**, **Slotegrator** — casino platform / game aggregator для запуску або наповнення онлайн-казино.
 
-## Розділ 1. Топ 10 ігрових платформ (gambling-оператори)
+## Коротка таблиця
 
-Ранжування за **group revenue 2025** (не GGR). Бренди в дужках — ключові продукти оператора.
+| № | Платформа | Тип | Ігри / студії | Фокус | Сайт |
+| --- | --- | --- | --- | --- | --- |
+| 1 | SOFTSWISS | Platform + Aggregator | 40,000+ / 300+ | Crypto + turnkey casino | https://www.softswiss.com |
+| 2 | Slotegrator | Aggregator + Turnkey | 40,000+ / 180+ | Швидкий запуск, emerging markets | https://slotegrator.pro |
+| 3 | EveryMatrix | Platform + Aggregator | 45,000+ / 355+ | Регульовані ринки (UK, US, EU) | https://everymatrix.com |
+| 4 | SoftGamings | Turnkey + Aggregator | 16,000+ / — | White-label casino | https://www.softgamings.com |
+| 5 | BetConstruct | Multi-vertical Platform | 6,500+ / — | Sportsbook + casino + retail | https://www.betconstruct.com |
+| 6 | Hub88 | Standalone Aggregator | 26,000+ / 200+ | Crypto / offshore content | https://hub88.io |
+| 7 | Pariplay Fusion | Standalone Aggregator | 14,000+ / 150+ | UK / US / regulated EU | https://pariplaygames.com |
+| 8 | Relax Gaming | Aggregator + Studio | 4,000+ / 70+ | Curated content, regulated | https://www.relax-gaming.com |
+| 9 | Alea | Standalone Aggregator | 16,000+ / 250+ | Brazil / LatAm / MGA | https://alea.com |
+| 10 | Bragg Gaming | Aggregator + PAM | 15,000+ / 120+ | US / Canada / regulated | https://bragg.group |
+| 11 | NuxGame | Turnkey + Aggregator | 17,500+ / 140+ | Crypto turnkey | https://nuxgame.com |
+| 12 | Digitain | Platform + Sportsbook | широкий каталог / 100+ | Sportsbook + casino stack | https://digitain.com |
+| 13 | Pragmatic Solutions | PAM / Full Platform | через інтеграції провайдерів | Enterprise PAM, regulated | https://pragmatic.solutions |
+| 14 | St8 | Standalone Aggregator | 19,000+ / 200+ | Engineering-led API | https://st8.io |
+| 15 | GR8 Tech | Platform + Aggregator | casino aggregation module | Sportsbook-first + casino | https://gr8.tech |
+| 16 | White Hat Gaming | PAM + Aggregator | 3,000+ / 130+ | UK / Malta / Ontario / US | https://www.whitehat-gaming.com |
+| 17 | Light & Wonder OpenGaming | RGS / Aggregation Network | 6,500+ / 60+ | US / UK / Ontario regulated | https://www.lnw.com |
+| 18 | IGT PlayDigital | RGS + Aggregation | 10,000+ / 120+ | US / UK regulated | https://www.igt.com |
+| 19 | REEVO | Aggregator + Studio | 20,000+ / 100+ | EU / LatAm, hybrid content | https://reevo.com |
+| 20 | LuckyStreak | Live + Aggregator | 6,000+ / — | Live dealer + aggregation | https://www.luckystreak.com |
 
-- Сума топ-10: **$58.6B** revenue
-- Частка топ-3: **56%** від суми топ-10
-- Sports+Casino брендів у списку: **7** ($42.4B)
-- Найшвидший ріст: **BetMGM** (+33% YoY)
-- Середній YoY по топ-10: **+13.7%**
+## Повна таблиця з описами
 
-| # | Оператор | Бренди | Категорія | Revenue 2025 | YoY |
-|---|----------|--------|-----------|--------------|-----|
-| 1 | **Flutter Entertainment** | FanDuel, Paddy Power, Betfair, PokerStars, Sisal, Snai | Sports + Casino | $16.38B | +17% |
-| 2 | **Allwyn** | лотереї / multi-jurisdiction lottery | Lottery | $9.71B | +4% |
-| 3 | **Entain** | bwin, Coral, Ladbrokes, partypoker (+ BetMGM JV окремо) | Sports + Casino | $6.81B | +3% |
-| 4 | **DraftKings** | DraftKings Sportsbook, Casino, DFS | Sports + Casino | $6.05B | +27% |
-| 5 | **bet365** | bet365 | Sports + Casino | $5.16B | +9% |
-| 6 | **FDJ United** | FDJ, Kindred assets (Unibet тощо) | Lottery + Online | $3.97B | -3% |
-| 7 | **Kaizen Gaming** | Betano, Stoiximan | Sports + Casino | $3.03B | +13% |
-| 8 | **BetMGM** | BetMGM | Sports + Casino | $2.8B | +33% |
-| 9 | **Lottomatica** | Lottomatica / Italy retail+online | Lottery + Online | $2.44B | +12% |
-| 10 | **Super Group** | Betway, Spin | Sports + Casino | $2.2B | +22% |
+| № | Платформа | Тип | Фокус | Ігри / студії | Опис | Сайт |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | SOFTSWISS | Platform + Aggregator | Crypto + turnkey casino | 40,000+ / 300+ | Повна casino-платформа (PAM, бонуси, платежі) + Game Aggregator. Сильна в crypto з 2013, швидкий запуск (~1 міс.), є sportsbook і Affilka. Один із лідерів ринку за нагородами Best Platform 2025–2026. | https://www.softswiss.com |
+| 2 | Slotegrator | Aggregator + Turnkey | Швидкий запуск, emerging markets | 40,000+ / 180+ | APIgrator — єдиний API для контенту; також turnkey/white-label, Sportegrator, Moneygrator, Partnergrator. Популярний у SMB і CIS/LatAm/Africa. Запуск часто 30–45 днів, допомога з ліцензіями (Anjouan, Curacao тощо). | https://slotegrator.pro |
+| 3 | EveryMatrix | Platform + Aggregator | Регульовані ринки (UK, US, EU) | 45,000+ / 355+ | Модульний стек: CasinoEngine, SlotMatrix (aggregator), OddsMatrix (sports), GamMatrix (PAM), MoneyMatrix (payments), PartnerMatrix. Найглибший каталог серед built-in агрегаторів; сильний compliance footprint. | https://everymatrix.com |
+| 4 | SoftGamings | Turnkey + Aggregator | White-label casino | 16,000+ / — | Довгограючий white-label/turnkey вендор (з 2007). Агрегація ігор + платежі + sportsbook-фіди; підходить для classic, crypto і hybrid казино. Один контракт на платформу й контент. | https://www.softgamings.com |
+| 5 | BetConstruct | Multi-vertical Platform | Sportsbook + casino + retail | 6,500+ / — | SpringBME — широка платформа: sportsbook, casino, poker, skill games, live studios, retail. Один вендор на весь продукт; популярний у emerging markets і серед операторів, яким потрібен betting-led стек. | https://www.betconstruct.com |
+| 6 | Hub88 | Standalone Aggregator | Crypto / offshore content | 26,000+ / 200+ | Незалежний aggregator з публічною API-документацією. Ексклюзивний контент-партнер Stake.com; сильний seamless/transfer wallet, HubWallet settlement. Ідеальний для crypto-first операторів. | https://hub88.io |
+| 7 | Pariplay Fusion | Standalone Aggregator | UK / US / regulated EU | 14,000+ / 150+ | Агрегатор Aristocrat Interactive з глибоким ліцензійним покриттям (UK, Malta, Gibraltar, кілька штатів США). Турніри/промо крос-вендорно; сильний вибір для регульованих юрисдикцій. | https://pariplaygames.com |
+| 8 | Relax Gaming | Aggregator + Studio | Curated content, regulated | 4,000+ / 70+ | Гібрид: власна студія + агрегація (Silver Bullet / Powered By Relax). Менший, але відібраний каталог; Dream Drop network jackpot. Сильний у UK/EU/Ontario/US; частина групи FDJ United. | https://www.relax-gaming.com |
+| 9 | Alea | Standalone Aggregator | Brazil / LatAm / MGA | 16,000+ / 250+ | Чистий B2B-агрегатор (колишній ALEA Play). MGA B2B ліцензія, сильна позиція в Бразилії з day-one regulation. Часто без мінімальних fees; зручний для mid-size операторів. | https://alea.com |
+| 10 | Bragg Gaming | Aggregator + PAM | US / Canada / regulated | 15,000+ / 120+ | Hub-агрегація + proprietary content + опційний PAM (Fuze). Клієнти рівня Caesars, BetMGM, DraftKings, bet365. Підходить, коли потрібні ліцензований pipe і exclusive titles. | https://bragg.group |
+| 11 | NuxGame | Turnkey + Aggregator | Crypto turnkey | 17,500+ / 140+ | API-first turnkey для crypto/offshore: 25+ монет, Web3-гаманці (MetaMask тощо). Агрегація + платежі + affiliate. Швидкий шлях для crypto-казино з одним вендором. | https://nuxgame.com |
+| 12 | Digitain | Platform + Sportsbook | Sportsbook + casino stack | широкий каталог / 100+ | Повний iGaming-стек: sportsbook, casino aggregation, payments, back office, live casino. Сильний у betting-операторів CIS/Asia/LatAm; turnkey і API-інтеграції. | https://digitain.com |
+| 13 | Pragmatic Solutions | PAM / Full Platform | Enterprise PAM, regulated | через інтеграції провайдерів | Enterprise Player Account Management і full-service platform. Орієнтований на масштабовані регульовані операції; часто обирають поруч із контентом Pragmatic Play / tier-1 студій. | https://pragmatic.solutions |
+| 14 | St8 | Standalone Aggregator | Engineering-led API | 19,000+ / 200+ | Сучасний aggregator з публічними API docs, Bonus API, jackpot tools, CI-тестуванням (TARS). Ліцензії UKGC/SGA/AGCO — для tech-команд, які хочуть self-serve інтеграцію, а не vendor-managed onboarding. | https://st8.io |
+| 15 | GR8 Tech | Platform + Aggregator | Sportsbook-first + casino | casino aggregation module | Sportsbook-led платформа з окремим casino aggregation модулем (GR8 Casino). Підходить betting-операторам, яким потрібен сильний sports core і контент казино в одному стеку. | https://gr8.tech |
+| 16 | White Hat Gaming | PAM + Aggregator | UK / Malta / Ontario / US | 3,000+ / 130+ | Регульований PAM + wallet + aggregation + payments + engagement. Менший каталог, але глибока сертифікація для tier-1 юрисдикцій. Орієнтир — compliance, не «найбільше ігор». | https://www.whitehat-gaming.com |
+| 17 | Light & Wonder OpenGaming | RGS / Aggregation Network | US / UK / Ontario regulated | 6,500+ / 60+ | OpenGaming Platform — мережа L&W + third-party studios через RGS. Власні хіти (напр. Huff N' Puff тощо) + live в регульованих ринках. Вибір, коли важливі сертифікації, а не максимальний volume каталогу. | https://www.lnw.com |
+| 18 | IGT PlayDigital | RGS + Aggregation | US / UK regulated | 10,000+ / 120+ | PlayRGS + third-party aggregation для операторів, які вже беруть IGT-контент. Покриття всіх US iGaming штатів; engagement/retention tools у пакеті. Enterprise-рівень для North America. | https://www.igt.com |
+| 19 | REEVO | Aggregator + Studio | EU / LatAm, hybrid content | 20,000+ / 100+ | Власна slot-студія (~100 titles) + великий third-party каталог через один API. MGA B2B; зростає в Southern Europe і LatAm. Зручно, коли потрібні і exclusive in-house, і volume aggregation. | https://reevo.com |
+| 20 | LuckyStreak | Live + Aggregator | Live dealer + aggregation | 6,000+ / — | Live-студія в Ризі + LuckyConnect aggregation API. Один seamless wallet на власні live-столи і third-party slots/crash. Підходить offshore / sweeps операторам, яким важливий live-продукт. | https://www.luckystreak.com |
 
-### Профілі
+## Легенда типів
 
-**1. Flutter Entertainment** — Світовий №1 online operator; US (FanDuel) — ключовий драйвер росту Аудиторія/масштаб: 15.9M Average Monthly Players. Джерело: Flutter FY2025 / 10-K ($16.38B).
+| Тип | Що означає |
+|-----|------------|
+| Platform + Aggregator | Повний стек казино + модуль агрегації ігор |
+| Aggregator + Turnkey | Акцент на API контенту + пакети white-label/turnkey |
+| Standalone Aggregator | Незалежний content hub (підключається до вашого PAM) |
+| Multi-vertical Platform | Casino + sportsbook + інші вертикалі в одному продукті |
+| PAM / Full Platform | Player Account Management і операційний backend |
+| RGS / Aggregation Network | Remote Game Server + мережа студій (часто regulated) |
 
-**2. Allwyn** — Lottery-модель: великий top-line, інша економіка ніж sportsbook Аудиторія/масштаб: lottery-led group (GGR ≈ revenue scale). Джерело: The iGaming EU 2025 ranking (€8.99B).
+## Примітки
 
-**3. Entain** — Зрілий EU/UK портфель; зростання стримане vs US peers Аудиторія/масштаб: UK/EU retail+online; US через BetMGM JV. Джерело: Entain FY2025 / ranking (€6.31B; US часто окремо).
-
-**4. DraftKings** — Один із найшвидших серед топ-операторів; US sportsbook war Аудиторія/масштаб: US-focused; перший повний рік net profit. Джерело: DraftKings FY2025 ($6.05B).
-
-**5. bet365** — Найбільший приватний оператор; сильний in-play sportsbook Аудиторія/масштаб: private; global sports-led brand. Джерело: bet365 FY to Mar 2025 (~€4.78B / £4.04B).
-
-**6. FDJ United** — На GGR виглядає більшим за revenue-line (lottery accounting) Аудиторія/масштаб: France lottery core + international online. Джерело: FDJ United FY2025 (€3.68B revenue; GGR вищий).
-
-**7. Kaizen Gaming** — Активна експансія в Бразилії та регульованих ринках Аудиторія/масштаб: EU + LatAm (Brazil Betano). Джерело: The iGaming EU 2025 (€2.81B).
-
-**8. BetMGM** — Найшвидший ріст у топ-10; №3 у US sportsbook race Аудиторія/масштаб: US JV MGM × Entain; +EBITDA. Джерело: BetMGM FY2025 (~$2.8B).
-
-**9. Lottomatica** — Сильний домашній ринок Італії; hybrid retail/online Аудиторія/масштаб: Italy-focused; GGR > reported revenue. Джерело: Lottomatica FY2025 (€2.26B).
-
-**10. Super Group** — Швидке зростання поза зрілою Європою Аудиторія/масштаб: multi-region online; Africa + Americas focus. Джерело: Super Group FY2025 ($2.2B).
-
-### Інсайти розділу 1
-
-1. **Flutter домінує з відривом** (~$16.4B) — майже як DraftKings + Entain разом.
-2. **Найшвидше ростуть US-бренди**: BetMGM (+33%), DraftKings (+27%), плюс Super Group (+22%) поза зрілою Європою.
-3. **Lottery-оператори (Allwyn, FDJ, Lottomatica)** на revenue-line виглядають інакше, ніж на GGR — для apples-to-apples порівнюйте GGR окремо.
-4. **Консолідація триває**: топ-оператори забирають дедалі більшу частку регульованого GGR (Track360: top-10 ~42% regulated GGR).
-5. Для України релевантні не глобальні гіганти напряму, а **локальні ліцензовані бренди** + B2B (Evolution тощо) як постачальники контенту.
-
-![top10_operators_revenue](output/top10_operators_revenue.png)
-
-![top10_operators_growth](output/top10_operators_growth.png)
-
----
-
-## Розділ 2. Макроринок online gambling
-
-- **2025 GGR:** ~**$108B**
-- **2026 GGR (прогноз):** ~**$121B** (+12% YoY)
-- **CAGR 2021–2026:** ~**10.9%**
-- Найбільша вертикаль: **Online Casino** (52%)
-- Найбільший регіон: **Europe** (~$43.5B)
-
-- Регульований ринок: **~68%** GGR
-- Mobile: **~72%** online revenue
-- США — найбільша країна (~$27.4B online GGR у 2025)
-- LatAm — найшвидший великий регіон (Brazil regulated ramp)
-
-![market_ggr_history](output/market_ggr_history.png)
-
-![regions_ggr](output/regions_ggr.png)
-
----
-
-## Розділ 3. Вертикалі та канали
-
-| Вертикаль | Частка GGR | GGR 2026 (орієнтир) |
-|-----------|------------|---------------------|
-| Online Casino | 52% | $63.0B |
-| Sports Betting | 35% | $42.5B |
-| Poker | 7% | $8.1B |
-| Bingo / Other | 6% | $6.9B |
-
-| Канал | Частка |
-|-------|--------|
-| Mobile | 72% |
-| Desktop / Other | 28% |
-
-| Регуляція | Частка | GGR 2026 |
-|-----------|--------|----------|
-| Regulated | 68% | $82.7B |
-| Grey / Unregulated | 32% | $38.3B |
-
-![verticals_share](output/verticals_share.png)
-
----
-
-## Розділ 4. Український ринок
-
-- Регулятор: **PlayCity** (замість КРАІЛ).
-- Виручка ліцензованих онлайн-казино **2025:** **45.5 млрд грн** (+8% vs 2024 / 42 млрд грн) — YouControl.
-- У реєстрі: **30** онлайн-казино; анульовано **8**, призупинено **2**.
-- До бюджету 2025: ~**19 млрд грн** (ліцензії + податки + лотереї).
-- Заблоковано **>3500** нелегальних сайтів.
-- Орієнтир лідера 2024: Favbet (~21.2 млрд грн виручки у 2024).
-
-Ринок стабілізується після бурхливої легалізації: нових ліцензій у 2025 мало (2), акцент зміщується на контроль, блокування сірого ринку та цифрові ліцензії.
-
-![ua_online_casino](output/ua_online_casino.png)
-
----
-
-## Розділ 5. Висновки
-
-1. **Глобальний online gambling ~$108→$121B GGR** — зростання двознакове, драйвери: US, Brazil, mobile.
-2. **Топ-платформи = Flutter / Allwyn / Entain / DraftKings / bet365**; швидкість росту вища в US і emerging markets.
-3. **Casino лишається найбільшою вертикаллю**, sports betting — найдинамічніша в нових юрисдикціях.
-4. **Україна** — регульований, але ще консолідаційний ринок (~45.5 млрд грн онлайн-казино); compliance і боротьба з нелегалами — головна тема 2026.
-5. Можливості: ліцензований product + localized payments; ризики — регуляторний тиск, advertising bans, санкційні списки.
-
-## Усі графіки
-
-![top10_operators_revenue](output/top10_operators_revenue.png)
-
-![top10_operators_growth](output/top10_operators_growth.png)
-
-![market_ggr_history](output/market_ggr_history.png)
-
-![verticals_share](output/verticals_share.png)
-
-![regions_ggr](output/regions_ggr.png)
-
-![ua_online_casino](output/ua_online_casino.png)
+- Порядок — орієнтовний shortlist ринку (видимість, покриття, зрілість), не офіційний рейтинг за виручкою: більшість B2B не публікує rate card / GGR.
+- Цифри ігор/студій — заявлені вендорами / галузеві огляди 2025–2026; у каталозі можуть дублюватися title’и між студіями.
+- Перед вибором перевіряйте ліцензії під конкретні юрисдикції (UKGC, MGA, US states, Brazil тощо).
 
 ## Джерела
 
-- [Track360 — Online Gambling Statistics 2026](https://track360.io/blog/online-gambling-statistics-2026-global-market-data)
-- [Track360 — iGaming Q1 2026 / top operators](https://track360.io/blog/igaming-industry-statistics-q1-2026-report)
-- [The iGaming EU — 2025 revenue ranking](https://theigaming.eu/2026/04/12/2025-gambling-revenue-15-largest-companies-ranked/)
-- [GamblingClub — top companies 2025](https://gamblingclub.be/en/flutter-remains-worlds-largest-gambling-company/)
-- Flutter Entertainment FY2025 / 10-K
-- [YouControl / Fair — онлайн-казино України 2025](https://www.fair.org.ua/eksperty-ozvuchyly-dani-shhodo-zrostannya-rynku-igaming-v-ukrayini/)
-- PlayCity / Delo.ua — бюджет і блокування нелегалів 2025
+- [Partnerkin — 20 Casino Game Aggregators](https://partnerkin.com/en/b2b/casino-games-aggregators/)
+- [Track360 — SoftSwiss vs EveryMatrix vs Slotegrator](https://track360.io/blog/softswiss-vs-everymatrix-vs-slotegrator-operator-comparison-2026)
+- Сайти вендорів: Softswiss, Slotegrator, EveryMatrix, Hub88, Alea, Relax Gaming тощо
 
-> Примітка: **Revenue ≠ GGR**. Lottery-оператори часто мають вищий GGR за нижчий net revenue. Цифри сірих ринків — оцінки.
+CSV: `output/top20_platforms.csv`
