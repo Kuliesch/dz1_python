@@ -1,154 +1,153 @@
-# Аналіз ігрового ринку
+# Аналіз ринку гемблінгу (iGaming)
 
 *Звіт згенеровано скриптом `game_market_analysis.py`.*
 
-## Розділ 1. Топ 10 ігрових платформ
+## Розділ 1. Топ 10 ігрових платформ (gambling-оператори)
 
-Ранжування за **виручкою ігор на платформі/сторфронті у 2025** (consumer spend на games). Де офіційних даних немає — оцінка (`confidence=estimate`).
+Ранжування за **group revenue 2025** (не GGR). Бренди в дужках — ключові продукти оператора.
 
-- Сума топ-10 (tracked): **$156.1B**
-- Топ-3 (App Store + Google Play + China Android): **71%** від tracked-суми
-- Mobile у топ-10: **71%** виручки
-- Найшвидший ріст у списку: **Nintendo eShop** (+25% YoY)
-- High-confidence спостережень: **5/10**
+- Сума топ-10: **$58.6B** revenue
+- Частка топ-3: **56%** від суми топ-10
+- Sports+Casino брендів у списку: **7** ($42.4B)
+- Найшвидший ріст: **BetMGM** (+33% YoY)
+- Середній YoY по топ-10: **+13.7%**
 
-| # | Платформа | Категорія | Виручка 2025 | YoY | Аудиторія | Confidence |
-|---|-----------|-----------|--------------|-----|-----------|------------|
-| 1 | **Apple App Store** | Mobile | $52.50BB | +0.6% | 850M середн. тижневих користувачів App Store | high |
-| 2 | **Google Play** | Mobile | $30.00BB | -1% | 42.4B завантажень ігор у 2025 | high |
-| 3 | **China Android stores** | Mobile | $28.00BB | +5% | агреговано (без Google Play у КНР) | estimate |
-| 4 | **PlayStation Network** | Console | $16.10BB | +5.5% | 124M MAU (бер. 2025) | high |
-| 5 | **Steam** | PC | $11.70BB | +13% | ~132–198M MAU (оцінки) | medium |
-| 6 | **Xbox (Store + Game Pass)** | Console / PC | $8.00BB | +8% | Game Pass ~37M підписників | estimate |
-| 7 | **Roblox** | UGC platform | $5.00BB | +20% | ~450M MAU | estimate |
-| 8 | **Nintendo eShop** | Console | $2.60BB | +25% | Switch 2 >10M шт. у частковому 2025 | high |
-| 9 | **Epic Games Store** | PC | $1.16BB | +6% | 78M MAU на PC | high |
-| 10 | **Battle.net / інші клієнти** | PC / Multi | $1.00BB | +0% | фрагментовано (WoW, LoL client, Galaxy Store…) | estimate |
+| # | Оператор | Бренди | Категорія | Revenue 2025 | YoY |
+|---|----------|--------|-----------|--------------|-----|
+| 1 | **Flutter Entertainment** | FanDuel, Paddy Power, Betfair, PokerStars, Sisal, Snai | Sports + Casino | $16.38B | +17% |
+| 2 | **Allwyn** | лотереї / multi-jurisdiction lottery | Lottery | $9.71B | +4% |
+| 3 | **Entain** | bwin, Coral, Ladbrokes, partypoker (+ BetMGM JV окремо) | Sports + Casino | $6.81B | +3% |
+| 4 | **DraftKings** | DraftKings Sportsbook, Casino, DFS | Sports + Casino | $6.05B | +27% |
+| 5 | **bet365** | bet365 | Sports + Casino | $5.16B | +9% |
+| 6 | **FDJ United** | FDJ, Kindred assets (Unibet тощо) | Lottery + Online | $3.97B | -3% |
+| 7 | **Kaizen Gaming** | Betano, Stoiximan | Sports + Casino | $3.03B | +13% |
+| 8 | **BetMGM** | BetMGM | Sports + Casino | $2.8B | +33% |
+| 9 | **Lottomatica** | Lottomatica / Italy retail+online | Lottery + Online | $2.44B | +12% |
+| 10 | **Super Group** | Betway, Spin | Sports + Casino | $2.2B | +22% |
 
-### Короткі профілі
+### Профілі
 
-**1. Apple App Store** (Apple) — Найбільший ігровий сторфронт у світі за виручкою IAP. Джерело: Sensor Tower / industry reports.
+**1. Flutter Entertainment** — Світовий №1 online operator; US (FanDuel) — ключовий драйвер росту Аудиторія/масштаб: 15.9M Average Monthly Players. Джерело: Flutter FY2025 / 10-K ($16.38B).
 
-**2. Google Play** (Google) — Лідер за обсягом downloads; виручка нижча за iOS через ціни/ринки. Джерело: Sensor Tower.
+**2. Allwyn** — Lottery-модель: великий top-line, інша економіка ніж sportsbook Аудиторія/масштаб: lottery-led group (GGR ≈ revenue scale). Джерело: The iGaming EU 2025 ranking (€8.99B).
 
-**3. China Android stores** (Tencent / Huawei / Xiaomi / OPPO / Vivo / TapTap) — Фрагментований канал; критичний для global mobile top-grossing. Джерело: залишок Newzoo mobile мінус App Store/GP.
+**3. Entain** — Зрілий EU/UK портфель; зростання стримане vs US peers Аудиторія/масштаб: UK/EU retail+online; US через BetMGM JV. Джерело: Entain FY2025 / ranking (€6.31B; US часто окремо).
 
-**4. PlayStation Network** (Sony) — Лише digital software/add-on; Network Services (~$5.1B) окремо. Джерело: Sony FY2025 digital software + add-on (¥2.415T).
+**4. DraftKings** — Один із найшвидших серед топ-операторів; US sportsbook war Аудиторія/масштаб: US-focused; перший повний рік net profit. Джерело: DraftKings FY2025 ($6.05B).
 
-**5. Steam** (Valve) — Найшвидший ріст серед великих PC/console сторів (+13%); ~75% PC digital. Джерело: Sensor Tower; MAU — GameDiscoverCo / DSA EU.
+**5. bet365** — Найбільший приватний оператор; сильний in-play sportsbook Аудиторія/масштаб: private; global sports-led brand. Джерело: bet365 FY to Mar 2025 (~€4.78B / £4.04B).
 
-**6. Xbox (Store + Game Pass)** (Microsoft) — Підписка — ядро екосистеми; hardware слабший за PS. Джерело: Game Pass ~$5B + оцінка digital store.
+**6. FDJ United** — На GGR виглядає більшим за revenue-line (lottery accounting) Аудиторія/масштаб: France lottery core + international online. Джерело: FDJ United FY2025 (€3.68B revenue; GGR вищий).
 
-**7. Roblox** (Roblox Corporation) — І гра, і платформа; домінує в cross-platform engagement. Джерело: engagement Sensor Tower; bookings — орієнтир.
+**7. Kaizen Gaming** — Активна експансія в Бразилії та регульованих ринках Аудиторія/масштаб: EU + LatAm (Brazil Betano). Джерело: The iGaming EU 2025 (€2.81B).
 
-**8. Nintendo eShop** (Nintendo) — Digital ~55% software; first-party IP тримає виручку. Джерело: Nintendo digital software FY (~¥408B / ~$2.6B).
+**8. BetMGM** — Найшвидший ріст у топ-10; №3 у US sportsbook race Аудиторія/масштаб: US JV MGM × Entain; +EBITDA. Джерело: BetMGM FY2025 (~$2.8B).
 
-**9. Epic Games Store** (Epic Games) — 3P spending +57% до $400M; без D2C Fortnite/Marvel Rivals тощо. Джерело: Epic Games Store 2025 Year in Review.
+**9. Lottomatica** — Сильний домашній ринок Італії; hybrid retail/online Аудиторія/масштаб: Italy-focused; GGR > reported revenue. Джерело: Lottomatica FY2025 (€2.26B).
 
-**10. Battle.net / інші клієнти** (Blizzard / Riot / Amazon / Samsung) — Включно з Galaxy Store, Amazon Appstore, itch.io тощо. Джерело: агрегований орієнтир second-tier storefronts.
+**10. Super Group** — Швидке зростання поза зрілою Європою Аудиторія/масштаб: multi-region online; Africa + Americas focus. Джерело: Super Group FY2025 ($2.2B).
 
 ### Інсайти розділу 1
 
-1. **Mobile-сторфронти займають три перші місця** і генерують більшість tracked-виручки — App Store сам майже дорівнює Google Play + China Android.
-2. **PlayStation Network випереджає Steam за digital software revenue** (~$16B vs $11.7B), але Steam швидше росте (+13%) і домінує на PC.
-3. **Xbox тримається на Game Pass** (~$5B підписка + store), не на hardware.
-4. **Epic** малий за store spend ($1.16B), але важливий як D2C/free-games і як Unreal/Epic ecosystem; 78M MAU на PC.
-5. **Roblox** — окремий клас UGC-платформи з гігантським MAU (~450M), який конкурує з «класичними» сторами за увагу гравців.
+1. **Flutter домінує з відривом** (~$16.4B) — майже як DraftKings + Entain разом.
+2. **Найшвидше ростуть US-бренди**: BetMGM (+33%), DraftKings (+27%), плюс Super Group (+22%) поза зрілою Європою.
+3. **Lottery-оператори (Allwyn, FDJ, Lottomatica)** на revenue-line виглядають інакше, ніж на GGR — для apples-to-apples порівнюйте GGR окремо.
+4. **Консолідація триває**: топ-оператори забирають дедалі більшу частку регульованого GGR (Track360: top-10 ~42% regulated GGR).
+5. Для України релевантні не глобальні гіганти напряму, а **локальні ліцензовані бренди** + B2B (Evolution тощо) як постачальники контенту.
 
-![top10_platforms_revenue](output/top10_platforms_revenue.png)
+![top10_operators_revenue](output/top10_operators_revenue.png)
 
-![top10_by_category](output/top10_by_category.png)
-
----
-
-## Розділ 2. Макроринок (Newzoo)
-
-У **2025** глобальний ігровий ринок: **$201.6B** (+9.1% YoY). Прогноз **2026**: **$213.9B** (+6.1% YoY). Домінує **Mobile** ($121.1B).
-
-| Сегмент | 2025, $B | Ріст 2025 | 2026, $B | Ріст 2026 | Частка 2026 |
-|---------|----------|-----------|----------|-----------|-------------|
-| Mobile | 113.3 | +10.7% | 121.1 | +6.8% | 56.6% |
-| Console | 44.7 | +2.8% | 46.9 | +5.1% | 21.9% |
-| PC | 43.6 | +12.0% | 45.9 | +5.3% | 21.5% |
-
-- Найшвидше у 2025: **PC** (+12.0%).
-- Найшвидше у 2026 (прогноз): **Mobile** (+6.8%).
-- CAGR 2021–2026: **3.5%**.
-
-### Драйвери 2026
-
-1. **GTA VI** — каталізатор console full-game spending.
-2. **Mobile D2C / ARPPU** — зростання через витрати платників.
-3. **PC сповільнення** після +12% у 2025 (дорожча пам’ять, висока база).
+![top10_operators_growth](output/top10_operators_growth.png)
 
 ---
 
-## Розділ 3. Монетизація
+## Розділ 2. Макроринок online gambling
 
-| Модель | Орієнтовна частка |
-|--------|-------------------|
-| In-game / live service | 52% |
-| Full-game (premium) | 28% |
-| Subscriptions | 14% |
-| Інше | 6% |
+- **2025 GGR:** ~**$108B**
+- **2026 GGR (прогноз):** ~**$121B** (+12% YoY)
+- **CAGR 2021–2026:** ~**10.9%**
+- Найбільша вертикаль: **Online Casino** (52%)
+- Найбільший регіон: **Europe** (~$43.5B)
 
-Live-service лишається основою виручки; premium/full-game у 2026 прискорюється завдяки GTA VI (~+17.5% full-game на консолях).
+- Регульований ринок: **~68%** GGR
+- Mobile: **~72%** online revenue
+- США — найбільша країна (~$27.4B online GGR у 2025)
+- LatAm — найшвидший великий регіон (Brazil regulated ramp)
+
+![market_ggr_history](output/market_ggr_history.png)
+
+![regions_ggr](output/regions_ggr.png)
 
 ---
 
-## Розділ 4. Український контекст
+## Розділ 3. Вертикалі та канали
 
-### Споживчий ринок (DOU / ERC, 2025)
+| Вертикаль | Частка GGR | GGR 2026 (орієнтир) |
+|-----------|------------|---------------------|
+| Online Casino | 52% | $63.0B |
+| Sports Betting | 35% | $42.5B |
+| Poker | 7% | $8.1B |
+| Bingo / Other | 6% | $6.9B |
 
-- Фізичні ігри на дисках: **-14%** YoY.
-- Ринок консолей: **+14%** YoY.
-- **PlayStation > 85%** продажів консолей; далі Steam Deck, Nintendo, Xbox.
-- S.T.A.L.K.E.R. 2 — лідер фізичних продажів у кількох місяцях 2025.
+| Канал | Частка |
+|-------|--------|
+| Mobile | 72% |
+| Desktop / Other | 28% |
 
-### Продуктовий геймдев (DOU 2025)
+| Регуляція | Частка | GGR 2026 |
+|-----------|--------|----------|
+| Regulated | 68% | $82.7B |
+| Grey / Unregulated | 32% | $38.3B |
 
-| Платформа | Студій у топ-20 |
-|-----------|-----------------|
-| Mobile | 14 |
-| PC | 12 |
-| Console / multi | 4 |
+![verticals_share](output/verticals_share.png)
 
-- Mobile — головний фокус українських продуктових студій.
-- Unity — найпоширеніший рушій (11/20).
-- Тренди 2026: AI у продакшні/UA, retention > інсталяції, гібридна монетизація.
+---
+
+## Розділ 4. Український ринок
+
+- Регулятор: **PlayCity** (замість КРАІЛ).
+- Виручка ліцензованих онлайн-казино **2025:** **45.5 млрд грн** (+8% vs 2024 / 42 млрд грн) — YouControl.
+- У реєстрі: **30** онлайн-казино; анульовано **8**, призупинено **2**.
+- До бюджету 2025: ~**19 млрд грн** (ліцензії + податки + лотереї).
+- Заблоковано **>3500** нелегальних сайтів.
+- Орієнтир лідера 2024: Favbet (~21.2 млрд грн виручки у 2024).
+
+Ринок стабілізується після бурхливої легалізації: нових ліцензій у 2025 мало (2), акцент зміщується на контроль, блокування сірого ринку та цифрові ліцензії.
+
+![ua_online_casino](output/ua_online_casino.png)
 
 ---
 
 ## Розділ 5. Висновки
 
-1. **Топ-платформи = mobile stores** за виручкою; **Steam/PSN** — якір PC/console.
-2. Стратегія релізу: scale → App Store / Google Play / China; premium IP → PSN + Steam (+ Xbox Game Pass для reach).
-3. **2026** — рік console-каталізатора (GTA VI) і AI-пайплайнів у mobile.
-4. В Україні — digital-first + PS-домінування; для студій — mobile live-ops + PC mid-core.
+1. **Глобальний online gambling ~$108→$121B GGR** — зростання двознакове, драйвери: US, Brazil, mobile.
+2. **Топ-платформи = Flutter / Allwyn / Entain / DraftKings / bet365**; швидкість росту вища в US і emerging markets.
+3. **Casino лишається найбільшою вертикаллю**, sports betting — найдинамічніша в нових юрисдикціях.
+4. **Україна** — регульований, але ще консолідаційний ринок (~45.5 млрд грн онлайн-казино); compliance і боротьба з нелегалами — головна тема 2026.
+5. Можливості: ліцензований product + localized payments; ризики — регуляторний тиск, advertising bans, санкційні списки.
 
 ## Усі графіки
 
-![top10_platforms_revenue](output/top10_platforms_revenue.png)
+![top10_operators_revenue](output/top10_operators_revenue.png)
 
-![top10_by_category](output/top10_by_category.png)
+![top10_operators_growth](output/top10_operators_growth.png)
 
-![market_history](output/market_history.png)
+![market_ggr_history](output/market_ggr_history.png)
 
-![platform_revenue](output/platform_revenue.png)
+![verticals_share](output/verticals_share.png)
 
-![platform_shares_2025](output/platform_shares_2025.png)
+![regions_ggr](output/regions_ggr.png)
 
-![platform_shares_2026](output/platform_shares_2026.png)
-
-![ua_console_share](output/ua_console_share.png)
+![ua_online_casino](output/ua_online_casino.png)
 
 ## Джерела
 
-- Sensor Tower / industry reports — App Store $52.5B, Google Play $30B, Steam $11.7B (2025)
-- [Sony FY2025 G&NS](https://www.sony.com/en/SonyInfo/IR/library/presen/business_segment_meeting/pdf/2025/GNS_E.pdf) — PSN 124M MAU; digital software ¥2.415T
-- [Epic Games Store 2025 Year in Review](https://store.epicgames.com/en-US/news/epic-games-store-2025-year-in-review)
-- Nintendo digital software / eShop FY figures (~$2.1–2.6B)
-- [Newzoo — $213.9B на 2026](https://www.gamesindustry.biz/newzoo-global-games-market-to-generate-2139bn-in-2026-up-61-yoy)
-- [DOU — ринок України 2025](https://gamedev.dou.ua/articles/best-selling-games-in-ukraine-2025/)
+- [Track360 — Online Gambling Statistics 2026](https://track360.io/blog/online-gambling-statistics-2026-global-market-data)
+- [Track360 — iGaming Q1 2026 / top operators](https://track360.io/blog/igaming-industry-statistics-q1-2026-report)
+- [The iGaming EU — 2025 revenue ranking](https://theigaming.eu/2026/04/12/2025-gambling-revenue-15-largest-companies-ranked/)
+- [GamblingClub — top companies 2025](https://gamblingclub.be/en/flutter-remains-worlds-largest-gambling-company/)
+- Flutter Entertainment FY2025 / 10-K
+- [YouControl / Fair — онлайн-казино України 2025](https://www.fair.org.ua/eksperty-ozvuchyly-dani-shhodo-zrostannya-rynku-igaming-v-ukrayini/)
+- PlayCity / Delo.ua — бюджет і блокування нелегалів 2025
 
-> Примітка: виручка платформ — games consumer spend на сторі/екосистемі. Не плутати з publisher revenue. Hardware, ads і secondary markets виключені там, де джерело це дозволяє.
+> Примітка: **Revenue ≠ GGR**. Lottery-оператори часто мають вищий GGR за нижчий net revenue. Цифри сірих ринків — оцінки.

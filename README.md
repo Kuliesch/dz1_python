@@ -1,6 +1,6 @@
-# Аналіз ігрового ринку
+# Аналіз ринку гемблінгу (iGaming)
 
-Python-аналіз глобального та українського ігрового ринку на основі публічних даних Newzoo і DOU.
+Python-аналіз глобального online gambling ринку та України.
 
 ## Швидкий старт
 
@@ -9,26 +9,20 @@ pip install -r requirements.txt
 python game_market_analysis.py
 ```
 
-Скрипт виведе ключові метрики в консоль, оновить `GAME_MARKET_REPORT.md` і збереже графіки/CSV у `output/`.
-
 ## Розділи звіту
 
-1. **Топ 10 ігрових платформ** — App Store, Google Play, China Android, PSN, Steam…
-2. Макроринок Mobile / Console / PC (Newzoo)
-3. Монетизація
-4. Український контекст
+1. **Топ 10 gambling-платформ / операторів** (Flutter, Allwyn, Entain, DraftKings…)
+2. Макроринок online GGR (~$108B → $121B)
+3. Вертикалі: casino / sports / poker
+4. Український ліцензований ринок
 5. Висновки
 
-## Що всередині
+## Топ-5 операторів за revenue 2025
 
-| Файл | Опис |
-|------|------|
-| `game_market_analysis.py` | Розрахунки, візуалізації, генерація звіту |
-| `GAME_MARKET_REPORT.md` | Повний звіт українською |
-| `output/` | PNG-графіки та CSV (`top10_platforms.csv` тощо) |
+1. Flutter Entertainment — $16.4B  
+2. Allwyn — ~$9.7B  
+3. Entain — ~$6.8B  
+4. DraftKings — $6.05B  
+5. bet365 — ~$5.2B  
 
-## Топ-3 платформи за виручкою ігор (2025)
-
-1. Apple App Store — $52.5B  
-2. Google Play — $30.0B  
-3. China Android stores — ~$28B (оцінка)
+Повний звіт: `GAME_MARKET_REPORT.md`

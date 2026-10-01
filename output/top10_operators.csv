@@ -1,0 +1,11 @@
+rank,platform,brands,category,revenue_2025_bn_usd,growth_yoy_pct,players_metric,confidence,source,note
+1,Flutter Entertainment,"FanDuel, Paddy Power, Betfair, PokerStars, Sisal, Snai",Sports + Casino,16.38,17.0,15.9M Average Monthly Players,high,Flutter FY2025 / 10-K ($16.38B),Світовий №1 online operator; US (FanDuel) — ключовий драйвер росту
+2,Allwyn,лотереї / multi-jurisdiction lottery,Lottery,9.71,4.0,lottery-led group (GGR ≈ revenue scale),high,The iGaming EU 2025 ranking (€8.99B),"Lottery-модель: великий top-line, інша економіка ніж sportsbook"
+3,Entain,"bwin, Coral, Ladbrokes, partypoker (+ BetMGM JV окремо)",Sports + Casino,6.81,3.0,UK/EU retail+online; US через BetMGM JV,high,Entain FY2025 / ranking (€6.31B; US часто окремо),Зрілий EU/UK портфель; зростання стримане vs US peers
+4,DraftKings,"DraftKings Sportsbook, Casino, DFS",Sports + Casino,6.05,27.0,US-focused; перший повний рік net profit,high,DraftKings FY2025 ($6.05B),Один із найшвидших серед топ-операторів; US sportsbook war
+5,bet365,bet365,Sports + Casino,5.16,9.0,private; global sports-led brand,high,bet365 FY to Mar 2025 (~€4.78B / £4.04B),Найбільший приватний оператор; сильний in-play sportsbook
+6,FDJ United,"FDJ, Kindred assets (Unibet тощо)",Lottery + Online,3.97,-3.0,France lottery core + international online,high,FDJ United FY2025 (€3.68B revenue; GGR вищий),На GGR виглядає більшим за revenue-line (lottery accounting)
+7,Kaizen Gaming,"Betano, Stoiximan",Sports + Casino,3.03,13.0,EU + LatAm (Brazil Betano),high,The iGaming EU 2025 (€2.81B),Активна експансія в Бразилії та регульованих ринках
+8,BetMGM,BetMGM,Sports + Casino,2.8,33.0,US JV MGM × Entain; +EBITDA,high,BetMGM FY2025 (~$2.8B),Найшвидший ріст у топ-10; №3 у US sportsbook race
+9,Lottomatica,Lottomatica / Italy retail+online,Lottery + Online,2.44,12.0,Italy-focused; GGR > reported revenue,high,Lottomatica FY2025 (€2.26B),Сильний домашній ринок Італії; hybrid retail/online
+10,Super Group,"Betway, Spin",Sports + Casino,2.2,22.0,multi-region online; Africa + Americas focus,high,Super Group FY2025 ($2.2B),Швидке зростання поза зрілою Європою
