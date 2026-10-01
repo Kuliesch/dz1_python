@@ -1,0 +1,11 @@
+rank,platform,category,owner,revenue_2025_bn,growth_yoy_pct,users_metric,users_value_m,confidence,source,note
+1,Apple App Store,Mobile,Apple,52.5,0.6,850M середн. тижневих користувачів App Store,850.0,high,Sensor Tower / industry reports,Найбільший ігровий сторфронт у світі за виручкою IAP
+2,Google Play,Mobile,Google,30.0,-1.0,42.4B завантажень ігор у 2025,,high,Sensor Tower,Лідер за обсягом downloads; виручка нижча за iOS через ціни/ринки
+3,China Android stores,Mobile,Tencent / Huawei / Xiaomi / OPPO / Vivo / TapTap,28.0,5.0,агреговано (без Google Play у КНР),,estimate,залишок Newzoo mobile мінус App Store/GP,Фрагментований канал; критичний для global mobile top-grossing
+4,PlayStation Network,Console,Sony,16.1,5.5,124M MAU (бер. 2025),124.0,high,Sony FY2025 digital software + add-on (¥2.415T),Лише digital software/add-on; Network Services (~$5.1B) окремо
+5,Steam,PC,Valve,11.7,13.0,~132–198M MAU (оцінки),165.0,medium,Sensor Tower; MAU — GameDiscoverCo / DSA EU,Найшвидший ріст серед великих PC/console сторів (+13%); ~75% PC digital
+6,Xbox (Store + Game Pass),Console / PC,Microsoft,8.0,8.0,Game Pass ~37M підписників,37.0,estimate,Game Pass ~$5B + оцінка digital store,Підписка — ядро екосистеми; hardware слабший за PS
+7,Roblox,UGC platform,Roblox Corporation,5.0,20.0,~450M MAU,450.0,estimate,engagement Sensor Tower; bookings — орієнтир,"І гра, і платформа; домінує в cross-platform engagement"
+8,Nintendo eShop,Console,Nintendo,2.6,25.0,Switch 2 >10M шт. у частковому 2025,,high,Nintendo digital software FY (~¥408B / ~$2.6B),Digital ~55% software; first-party IP тримає виручку
+9,Epic Games Store,PC,Epic Games,1.16,6.0,78M MAU на PC,78.0,high,Epic Games Store 2025 Year in Review,3P spending +57% до $400M; без D2C Fortnite/Marvel Rivals тощо
+10,Battle.net / інші клієнти,PC / Multi,Blizzard / Riot / Amazon / Samsung,1.0,0.0,"фрагментовано (WoW, LoL client, Galaxy Store…)",,estimate,агрегований орієнтир second-tier storefronts,"Включно з Galaxy Store, Amazon Appstore, itch.io тощо"
