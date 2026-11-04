@@ -1,0 +1,133 @@
+{
+  "source": "seed",
+  "note": "Demo catalog for pipeline testing — replace with live collectors.",
+  "providers": [
+    {
+      "slug": "pragmatic-play",
+      "name": "Pragmatic Play",
+      "website_url": "https://www.pragmaticplay.com",
+      "country_code": "MT",
+      "games": [
+        {
+          "slug": "sweet-bonanza",
+          "name": "Sweet Bonanza",
+          "release_date": "2019-06-20",
+          "game_type": "slot",
+          "rtp_percent": 96.48,
+          "volatility": "high"
+        },
+        {
+          "slug": "gates-of-olympus",
+          "name": "Gates of Olympus",
+          "release_date": "2021-02-13",
+          "game_type": "slot",
+          "rtp_percent": 96.50,
+          "volatility": "high"
+        },
+        {
+          "slug": "sugar-rush",
+          "name": "Sugar Rush",
+          "release_date": "2022-06-16",
+          "game_type": "slot",
+          "rtp_percent": 96.50,
+          "volatility": "high"
+        }
+      ]
+    },
+    {
+      "slug": "netent",
+      "name": "NetEnt",
+      "website_url": "https://www.netent.com",
+      "country_code": "SE",
+      "games": [
+        {
+          "slug": "starburst",
+          "name": "Starburst",
+          "release_date": "2012-11-01",
+          "game_type": "slot",
+          "rtp_percent": 96.09,
+          "volatility": "low"
+        },
+        {
+          "slug": "gonzos-quest",
+          "name": "Gonzo's Quest",
+          "release_date": "2011-05-01",
+          "game_type": "slot",
+          "rtp_percent": 95.97,
+          "volatility": "medium"
+        }
+      ]
+    },
+    {
+      "slug": "play-n-go",
+      "name": "Play'n GO",
+      "website_url": "https://www.playngo.com",
+      "country_code": "SE",
+      "games": [
+        {
+          "slug": "book-of-dead",
+          "name": "Book of Dead",
+          "release_date": "2016-01-14",
+          "game_type": "slot",
+          "rtp_percent": 96.21,
+          "volatility": "high"
+        },
+        {
+          "slug": "reactoonz",
+          "name": "Reactoonz",
+          "release_date": "2017-10-19",
+          "game_type": "slot",
+          "rtp_percent": 96.51,
+          "volatility": "high"
+        }
+      ]
+    },
+    {
+      "slug": "hacksaw-gaming",
+      "name": "Hacksaw Gaming",
+      "website_url": "https://www.hacksawgaming.com",
+      "country_code": "MT",
+      "games": [
+        {
+          "slug": "wanted-dead-or-a-wild",
+          "name": "Wanted Dead or a Wild",
+          "release_date": "2021-10-28",
+          "game_type": "slot",
+          "rtp_percent": 96.38,
+          "volatility": "high"
+        },
+        {
+          "slug": "le-bandit",
+          "name": "Le Bandit",
+          "release_date": "2023-09-14",
+          "game_type": "slot",
+          "rtp_percent": 96.35,
+          "volatility": "high"
+        }
+      ]
+    },
+    {
+      "slug": "jeellee",
+      "name": "Jeellee",
+      "website_url": null,
+      "country_code": null,
+      "games": [
+        {
+          "slug": "lucky-baker",
+          "name": "Lucky Baker",
+          "release_date": "2026-01-01",
+          "game_type": "slot",
+          "rtp_percent": null,
+          "volatility": "high",
+          "demo_url": "https://stake.com/casino/games/jeellee-lucky-baker",
+          "metadata": {
+            "pilot": true,
+            "pilot_order": 1,
+            "distribution_page": "https://stake.com/casino/games/jeellee-lucky-baker",
+            "notes": "First Blue Wave player target. RTP/release to be fact-checked from provider docs before publish."
+          }
+        }
+      ]
+    }
+  ]
+}

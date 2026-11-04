@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blue Wave Mock Slot</title>
+  <style>
+    :root { color-scheme: dark; font-family: Georgia, serif; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      background: radial-gradient(circle at top, #123 0%, #020617 70%);
+      color: #e2e8f0;
+    }
+    .cabinet {
+      width: min(920px, 94vw); border: 1px solid #334155; border-radius: 18px;
+      padding: 24px; background: #0f172a; box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+    h1 { margin: 0 0 8px; font-size: 1.6rem; letter-spacing: .04em; }
+    .meta { opacity: .75; margin-bottom: 18px; font-size: .95rem; }
+    .reels {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+      margin: 18px 0 22px; min-height: 140px;
+    }
+    .reel {
+      border: 1px solid #475569; border-radius: 12px; display: grid; place-items: center;
+      font-size: 2rem; background: #1e293b; transition: transform .15s ease;
+    }
+    .reel.spinning { transform: translateY(-4px); opacity: .7; }
+    .hud { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    button#spin {
+      appearance: none; border: 0; border-radius: 999px; padding: 14px 28px;
+      font: inherit; font-weight: 700; background: #38bdf8; color: #0f172a; cursor: pointer;
+    }
+    button#spin:disabled { opacity: .45; cursor: not-allowed; }
+    .badge { padding: 6px 10px; border-radius: 999px; background: #1e293b; border: 1px solid #334155; }
+    #log { margin-top: 16px; font-family: ui-monospace, monospace; font-size: .85rem; opacity: .85; min-height: 1.2em; }
+  </style>
+</head>
+<body>
+  <main class="cabinet" data-game="mock-slot">
+    <h1>Mock Slot Arena</h1>
+    <div class="meta">Training fixture for Blue Wave <code>player</code> · no real-money play</div>
+    <div class="reels" id="reels" aria-label="reels">
+      <div class="reel" data-reel="0">7</div>
+      <div class="reel" data-reel="1">A</div>
+      <div class="reel" data-reel="2">K</div>
+      <div class="reel" data-reel="3">★</div>
+      <div class="reel" data-reel="4">Q</div>
+    </div>
+    <div class="hud">
+      <div class="badge">Balance: <span id="balance" data-testid="balance">1000</span></div>
+      <div class="badge">Spins: <span id="spins" data-testid="spins">0</span></div>
+      <div class="badge">Last win: <span id="last-win" data-testid="last-win">0</span></div>
+      <button id="spin" data-testid="spin" data-action="spin">SPIN</button>
+    </div>
+    <div id="log" data-testid="log">Ready</div>
+  </main>
+  <script>
+    const symbols = ["7", "A", "K", "Q", "J", "★", "◆", "●"];
+    const reels = [...document.querySelectorAll(".reel")];
+    const balanceEl = document.getElementById("balance");
+    const spinsEl = document.getElementById("spins");
+    const winEl = document.getElementById("last-win");
+    const logEl = document.getElementById("log");
+    const spinBtn = document.getElementById("spin");
+    let balance = 1000;
+    let spins = 0;
+    let busy = false;
+
+    function setLog(msg) { logEl.textContent = msg; }
+
+    async function spin() {
+      if (busy) return;
+      if (balance < 1) { setLog("Out of balance"); return; }
+      busy = true;
+      spinBtn.disabled = true;
+      balance -= 1;
+      balanceEl.textContent = String(balance);
+      spins += 1;
+      spinsEl.textContent = String(spins);
+      setLog("Spinning…");
+      reels.forEach((r) => r.classList.add("spinning"));
+      await new Promise((r) => setTimeout(r, 700 + Math.random() * 500));
+      const outcome = reels.map((reel) => {
+        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+        reel.textContent = symbol;
+        reel.classList.remove("spinning");
+        return symbol;
+      });
+      const counts = outcome.reduce((acc, s) => (acc[s] = (acc[s] || 0) + 1, acc), {});
+      const best = Math.max(...Object.values(counts));
+      const win = best >= 3 ? best * 2 : 0;
+      balance += win;
+      balanceEl.textContent = String(balance);
+      winEl.textContent = String(win);
+      setLog(win > 0 ? `Win ${win} on ${outcome.join(" ")}` : `No win · ${outcome.join(" ")}`);
+      window.__lastSpin = { outcome, win, balance, spins, at: Date.now() };
+      busy = false;
+      spinBtn.disabled = false;
+    }
+
+    spinBtn.addEventListener("click", spin);
+    window.__mockSlot = { spin, getState: () => ({ balance, spins, busy }) };
+  </script>
+</body>
+</html>
