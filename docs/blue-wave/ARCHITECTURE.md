@@ -8,37 +8,55 @@
 | --- | --- |
 | `db/` | Postgres. Каталог провайдерів і ігор у **окремих таблицях**. |
 | `loader/` | Збір провайдерів + ігор з **датами релізів** → upsert у `db`. |
-| `player/` | Браузер → **спочатку learn**, потім грає демо і **записує відео**. |
+| `player/` | Передається гра → модель за багато ітерацій досліджує UI/фічі й вчиться грати → запис відео. |
 | `mounter/` | Монтаж сирого запису → короткий review MP4. |
 | `admin-api/` | HTTP API для адмінки (каталог + media status). |
 | `admin/` | Веб-адмінка (nginx SPA → проксі на admin-api). |
 
-## Запуск
+## Player (детальніше)
+
+Вхід:
+
+- `--game <slug>` — ідентифікатор
+- `--url` / `GAME_URL` — demo URL гри
+- `PLAYER_API_KEY` (+ опційно `PLAYER_API_BASE`, `PLAYER_MODEL`)
+
+Цикл `learn` (mode=model):
+
+1. Відкрити браузер (Playwright/Chromium).
+2. На кожній ітерації: скріншот + список інтерактивних елементів → модель.
+3. Модель повертає JSON-дію: `click` / `wait` / `note` / `done` + discovery (controls, features, ui_regions).
+4. Агент виконує дію, накопичує knowledge.
+5. Коли знайдено `spin` (і модель каже ready) → зберегти policy.
+
+Артефакти (`media_data`):
+
+| Шлях | Зміст |
+| --- | --- |
+| `/data/knowledge/<game>.json` | журнал ітерацій, фічі, контролі |
+| `/data/policies/<game>.json` | політика для record |
+| `/data/recordings/<game>.webm` | сирий геймплей |
+| `/data/events/<game>.json` | лог спінів |
+| `/data/mounted/<game>_review.mp4` | монтаж від mounter |
 
 ```bash
-# ядро: db + admin stack
+export PLAYER_API_KEY=...
+export GAME_URL=https://…/demo
+
+docker compose --profile play run --rm player \
+  python -m main learn --game my-slot --url "$GAME_URL" --iterations 30
+```
+
+Без ключа `--mode auto` використовує heuristic fallback (для mock/DOM-only).
+
+## Запуск стеку
+
+```bash
 docker compose up -d --build db admin-api admin
-# UI: http://localhost:8080
-# API: http://localhost:8000/health
-
-# каталог
 docker compose --profile load run --rm loader
-
-# геймплей + монтаж (спільний volume media_data)
 docker compose --profile play run --rm player
 docker compose --profile mount run --rm mounter
 ```
-
-### Media volume (`media_data` → `/data`)
-
-| Шлях | Хто пише | Зміст |
-| --- | --- | --- |
-| `/data/policies/` | player | навчені play policies |
-| `/data/recordings/<game>.webm` | player | сирий геймплей |
-| `/data/events/<game>.json` | player | лог спінів |
-| `/data/mounted/<game>_review.mp4` | mounter | змонтований огляд |
-
-`admin-api` монтує той самий volume (read) для `/api/media`.
 
 ## Схема даних
 
@@ -50,6 +68,6 @@ providers 1───* games
 
 ```
 loader → db
-player (learn→record) → mounter → mounted MP4
+player (model learn → record) → mounter → mounted MP4
 admin ← admin-api ← db + media volume
 ```

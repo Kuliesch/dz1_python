@@ -1,28 +1,58 @@
 # player
 
-Контейнер Blue Wave: **спочатку навчитись грати**, потім відкрити браузер, зіграти демосесію і **записати відео**.
+Контейнер Blue Wave: **йому передають гру**, він відкриває браузер і **за багато ітерацій вчиться в неї грати** за допомогою моделі (API key).
 
-## Фази
+## Ідея
 
-| Команда | Що робить |
+1. Ззовні передається гра: `--game <slug>` + `--url <demo>` (або `GAME_URL`).
+2. Контейнер відкриває Chromium (Playwright).
+3. Vision/chat-модель (OpenAI-compatible) багато разів:
+   - дивиться скріншот + інтерактивний DOM;
+   - клікає / чекає / нотує;
+   - досліджує інтерфейс, фічі, контролі (spin, bet, info, autoplay…).
+4. Зберігає:
+   - `/data/knowledge/<game>.json` — журнал дослідження;
+   - `/data/policies/<game>.json` — політика для подальшого запису.
+5. `record` відтворює політику і пише відео для `mounter`.
+
+API-ключ **не комітиться** — лише env.
+
+## Env
+
+| Змінна | Опис |
 | --- | --- |
-| `learn` | Відкриває гру, шукає кнопку spin, міряє темп, зберігає policy в `/data/policies/` |
-| `record` | Завантажує policy, грає N спінів, пише `/data/recordings/<game>.webm` + event log |
-| `run` | `learn` → `record` підряд (entrypoint за замовчуванням) |
-
-За замовчуванням використовується локальний fixture `fixtures/mock_slot.html` (без real-money). Для дозволеного демо: `--url https://…`.
+| `PLAYER_API_KEY` | API ключ моделі (обов’язково для `--mode model`) |
+| `PLAYER_API_BASE` | База OpenAI-compatible API (default `https://api.openai.com/v1`) |
+| `PLAYER_MODEL` | Модель (default `gpt-4o-mini`) |
+| `GAME_URL` | Demo URL гри |
+| `PLAYER_LEARN_ITERATIONS` | Кількість ітерацій навчання (default 25) |
 
 ## Запуск
 
 ```bash
-docker compose --profile play run --rm player
-# або окремо:
-docker compose --profile play run --rm player python -m main learn --game mock-slot
-docker compose --profile play run --rm player python -m main record --game mock-slot --max-spins 15
+export PLAYER_API_KEY=sk-...
+export GAME_URL="https://example.com/demo"
+
+docker compose --profile play run --rm \
+  -e PLAYER_API_KEY \
+  -e PLAYER_API_BASE \
+  -e PLAYER_MODEL \
+  -e GAME_URL \
+  player \
+  python -m main learn --game sweet-bonanza --url "$GAME_URL" --iterations 30
+
+docker compose --profile play run --rm \
+  -e GAME_URL \
+  player \
+  python -m main record --game sweet-bonanza --max-spins 20
 ```
 
-Вихід (volume `media_data`):
+Без ключа `--mode auto` падає назад на heuristic (лише для mock fixture / простих DOM).
 
-- `/data/policies/<game>.json` — навчена політика
-- `/data/recordings/<game>.webm` — відео для `mounter`
-- `/data/events/<game>.json` — лог спінів/подій
+## Режими learn
+
+| `--mode` | Поведінка |
+| --- | --- |
+| `auto` | model якщо є `PLAYER_API_KEY`, інакше heuristic |
+| `model` | тільки модель (потрібен ключ) |
+| `heuristic` | швидкий DOM fallback без моделі |

@@ -32,6 +32,10 @@ services:
     container_name: bluewave-player
     environment:
       GAME_URL: ${GAME_URL:-}
+      PLAYER_API_KEY: ${PLAYER_API_KEY:-}
+      PLAYER_API_BASE: ${PLAYER_API_BASE:-https://api.openai.com/v1}
+      PLAYER_MODEL: ${PLAYER_MODEL:-gpt-4o-mini}
+      PLAYER_LEARN_ITERATIONS: ${PLAYER_LEARN_ITERATIONS:-25}
     volumes:
       - media_data:/data
     profiles:

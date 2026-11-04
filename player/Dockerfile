@@ -13,9 +13,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY fixtures/ /app/fixtures/
 COPY src/ /app/src/
 
-RUN mkdir -p /data/policies /data/recordings /data/events
+RUN mkdir -p /data/policies /data/recordings /data/events /data/knowledge
 
 VOLUME ["/data"]
 
-# Default: learn the mock game, then record gameplay video
-CMD ["python", "-m", "main", "run", "--game", "mock-slot", "--max-spins", "10"]
+# Pass game via GAME_SLUG/GAME_URL and API key via PLAYER_API_KEY
+CMD ["python", "-m", "main", "learn", "--game", "mock-slot", "--mode", "auto", "--iterations", "15"]

@@ -8,7 +8,7 @@ Video-first мережа AI-оглядів слотів з власним кат
 | --- | --- |
 | `db/` | Postgres: `providers` + `games` |
 | `loader/` | Збір провайдерів/ігор з датами релізів |
-| `player/` | Learn → play → record video |
+| `player/` | Передається гра → модель вчиться грати (багато ітерацій) → video |
 | `mounter/` | Монтаж запису → review MP4 |
 | `admin-api/` | HTTP API для адмінки |
 | `admin/` | Веб-адмінка |
@@ -24,10 +24,16 @@ docker compose up -d --build db admin-api admin
 # наповнити каталог
 docker compose --profile load run --rm loader
 
-# геймплей + монтаж
-docker compose --profile play run --rm player
+# геймплей: передати гру + API ключ моделі
+export PLAYER_API_KEY=...
+export GAME_URL=https://example.com/demo
+docker compose --profile play run --rm player \
+  python -m main learn --game demo-slot --url "$GAME_URL" --iterations 30
+docker compose --profile play run --rm player \
+  python -m main record --game demo-slot --max-spins 20
 docker compose --profile mount run --rm mounter
 ```
+
 
 ## Документація
 

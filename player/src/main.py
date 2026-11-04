@@ -1,11 +1,13 @@
-"""Blue Wave player — learn to play a demo game, then record gameplay video.
+"""Blue Wave player — pass a game, learn it with a model, then record video.
 
-Workflow:
-  1) learn  — open browser, discover controls, measure pacing, save policy
-  2) record — reload policy, play N spins, save Playwright video + event log
+Flow:
+  1) Receive game (slug + URL)
+  2) Open browser
+  3) Over many iterations a vision/chat model explores UI, features, controls
+  4) Save knowledge + play policy
+  5) (optional) record gameplay video using the learned policy
 
-By default uses the local mock slot fixture so the pipeline runs without
-external demo URLs. Pass --url to target a permitted demo page.
+API key via env: PLAYER_API_KEY (never commit secrets).
 """
 
 from __future__ import annotations
@@ -17,9 +19,11 @@ import shutil
 import sys
 from pathlib import Path
 
+from agent_learner import learn_with_model
 from browser import browser_page
 from learner import learn_game
-from paths import EVENTS, FIXTURES, POLICIES, RECORDINGS, ensure_data_dirs
+from model_client import ModelClient, ModelError, api_key, model_name
+from paths import EVENTS, FIXTURES, KNOWLEDGE, POLICIES, RECORDINGS, ensure_data_dirs
 from player import play_with_policy
 from policy import PlayPolicy
 
@@ -31,28 +35,74 @@ def mock_url() -> str:
 def resolve_url(url: str | None) -> str:
     if url:
         return url
-    return os.environ.get("GAME_URL") or mock_url()
+    env_url = os.environ.get("GAME_URL")
+    if env_url:
+        return env_url
+    return mock_url()
 
 
 def policy_path(game_slug: str) -> Path:
     return POLICIES / f"{game_slug}.json"
 
 
+def knowledge_path(game_slug: str) -> Path:
+    return KNOWLEDGE / f"{game_slug}.json"
+
+
 def cmd_learn(args: argparse.Namespace) -> int:
     ensure_data_dirs()
     start_url = resolve_url(args.url)
-    practice = getattr(args, "learn_spins", None) or 3
+    mode = args.mode
+    if mode == "auto":
+        mode = "model" if api_key() else "heuristic"
+
     with browser_page(headless=not args.headed) as (_pw, _browser, page):
-        policy = learn_game(
-            page,
-            game_slug=args.game,
-            start_url=start_url,
-            practice_spins=practice,
-        )
+        if mode == "model":
+            try:
+                client = ModelClient(model=args.model or None)
+            except ModelError as exc:
+                raise SystemExit(str(exc)) from exc
+            policy, knowledge = learn_with_model(
+                page,
+                client=client,
+                game_slug=args.game,
+                start_url=start_url,
+                iterations=args.iterations,
+            )
+            knowledge_out = knowledge.save(knowledge_path(args.game))
+        else:
+            policy = learn_game(
+                page,
+                game_slug=args.game,
+                start_url=start_url,
+                practice_spins=args.learn_spins,
+            )
+            knowledge_out = None
+
         if args.max_spins:
             policy.max_spins = args.max_spins
+
     out = policy.save(policy_path(args.game))
-    print(json.dumps({"ok": True, "phase": "learn", "policy": str(out), "notes": policy.notes}, indent=2))
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "phase": "learn",
+                "mode": mode,
+                "game": args.game,
+                "url": start_url,
+                "model": model_name() if mode == "model" else None,
+                "iterations": args.iterations if mode == "model" else args.learn_spins,
+                "policy": str(out),
+                "knowledge": str(knowledge_out) if knowledge_out else None,
+                "controls": policy.extras.get("controls") if mode == "model" else {"spin": policy.spin_selector},
+                "features": policy.extras.get("features") if mode == "model" else [],
+                "notes": policy.notes,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
     return 0
 
 
@@ -61,7 +111,7 @@ def cmd_record(args: argparse.Namespace) -> int:
     path = policy_path(args.game)
     if not path.exists():
         raise SystemExit(
-            f"No policy for '{args.game}'. Run learn first: python -m main learn --game {args.game}"
+            f"No policy for '{args.game}'. Run learn first with the game URL and PLAYER_API_KEY."
         )
     policy = PlayPolicy.load(path)
     if args.url:
@@ -90,7 +140,6 @@ def cmd_record(args: argparse.Namespace) -> int:
     else:
         final_video = None  # type: ignore[assignment]
 
-    # cleanup temp context dir
     shutil.rmtree(session_dir, ignore_errors=True)
 
     print(
@@ -104,6 +153,7 @@ def cmd_record(args: argparse.Namespace) -> int:
                 "events": str(events_file),
                 "policy": str(path),
             },
+            ensure_ascii=False,
             indent=2,
         )
     )
@@ -111,12 +161,15 @@ def cmd_record(args: argparse.Namespace) -> int:
 
 
 def cmd_run(args: argparse.Namespace) -> int:
-    """Learn then record in one shot (default container entrypoint)."""
     learn_args = argparse.Namespace(
         game=args.game,
         url=args.url,
         headed=args.headed,
-        max_spins=args.learn_spins,
+        max_spins=args.max_spins,
+        learn_spins=args.learn_spins,
+        iterations=args.iterations,
+        mode=args.mode,
+        model=args.model,
     )
     record_args = argparse.Namespace(
         game=args.game,
@@ -131,27 +184,58 @@ def cmd_run(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Blue Wave player container")
+    parser = argparse.ArgumentParser(
+        description="Blue Wave player: pass a game, learn UI with a model, record video"
+    )
     sub = parser.add_subparsers(dest="command", required=True)
 
     def add_common(p: argparse.ArgumentParser) -> None:
-        p.add_argument("--game", default="mock-slot", help="Game slug / policy name")
-        p.add_argument("--url", default=None, help="Demo URL (default: local mock fixture)")
+        p.add_argument("--game", required=True, help="Game slug (identity for policy/knowledge)")
+        p.add_argument(
+            "--url",
+            default=None,
+            help="Game demo URL to open (or env GAME_URL; mock fixture if omitted)",
+        )
         p.add_argument("--headed", action="store_true", help="Show browser UI")
         p.add_argument("--max-spins", type=int, default=None, help="Spins for record phase")
 
-    learn = sub.add_parser("learn", help="Discover controls and save a play policy")
+    def add_learn_flags(p: argparse.ArgumentParser) -> None:
+        p.add_argument(
+            "--mode",
+            choices=["auto", "model", "heuristic"],
+            default="auto",
+            help="Learning mode (auto uses model when PLAYER_API_KEY is set)",
+        )
+        p.add_argument(
+            "--model",
+            default=None,
+            help="Override PLAYER_MODEL (OpenAI-compatible model id)",
+        )
+        p.add_argument(
+            "--iterations",
+            type=int,
+            default=int(os.environ.get("PLAYER_LEARN_ITERATIONS", "25")),
+            help="Model exploration iterations (default 25)",
+        )
+        p.add_argument(
+            "--learn-spins",
+            type=int,
+            default=3,
+            help="Heuristic practice spins (fallback mode only)",
+        )
+
+    learn = sub.add_parser("learn", help="Explore game UI with model over many iterations")
     add_common(learn)
-    learn.add_argument("--learn-spins", type=int, default=3, help="Practice spins while learning")
+    add_learn_flags(learn)
     learn.set_defaults(func=cmd_learn)
 
-    record = sub.add_parser("record", help="Play with a learned policy and record video")
+    record = sub.add_parser("record", help="Play with learned policy and record video")
     add_common(record)
     record.set_defaults(func=cmd_record)
 
-    run = sub.add_parser("run", help="Learn first, then record (default pipeline)")
+    run = sub.add_parser("run", help="Learn then record")
     add_common(run)
-    run.add_argument("--learn-spins", type=int, default=3, help="Practice spins during learn")
+    add_learn_flags(run)
     run.set_defaults(func=cmd_run, max_spins=10)
 
     return parser
