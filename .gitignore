@@ -11,4 +11,5 @@ venv/
 output/
 *.log
 player/data/
+.data/
 *.webm

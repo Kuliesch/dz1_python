@@ -19,7 +19,7 @@ import shutil
 import sys
 from pathlib import Path
 
-from agent_learner import learn_with_model
+from agent_learner import LearnError, learn_with_model
 from browser import browser_page
 from learner import learn_game
 from model_client import ModelClient, ModelError, api_key, model_name
@@ -56,31 +56,58 @@ def cmd_learn(args: argparse.Namespace) -> int:
     if mode == "auto":
         mode = "model" if api_key() else "heuristic"
 
-    with browser_page(headless=not args.headed) as (_pw, _browser, page):
-        if mode == "model":
-            try:
-                client = ModelClient(model=args.model or None)
-            except ModelError as exc:
-                raise SystemExit(str(exc)) from exc
-            policy, knowledge = learn_with_model(
-                page,
-                client=client,
-                game_slug=args.game,
-                start_url=start_url,
-                iterations=args.iterations,
-            )
-            knowledge_out = knowledge.save(knowledge_path(args.game))
-        else:
-            policy = learn_game(
-                page,
-                game_slug=args.game,
-                start_url=start_url,
-                practice_spins=args.learn_spins,
-            )
-            knowledge_out = None
+    knowledge_out = None
+    try:
+        with browser_page(headless=not args.headed) as (_pw, _browser, page):
+            if mode == "model":
+                try:
+                    client = ModelClient(model=args.model or None)
+                except ModelError as exc:
+                    raise SystemExit(str(exc)) from exc
+                try:
+                    policy, knowledge = learn_with_model(
+                        page,
+                        client=client,
+                        game_slug=args.game,
+                        start_url=start_url,
+                        iterations=args.iterations,
+                    )
+                except LearnError as exc:
+                    if exc.knowledge is not None:
+                        knowledge_out = exc.knowledge.save(knowledge_path(args.game))
+                    raise
+                knowledge_out = knowledge.save(knowledge_path(args.game))
+            else:
+                policy = learn_game(
+                    page,
+                    game_slug=args.game,
+                    start_url=start_url,
+                    practice_spins=args.learn_spins,
+                )
 
-        if args.max_spins:
-            policy.max_spins = args.max_spins
+            if args.max_spins:
+                policy.max_spins = args.max_spins
+    except Exception as exc:
+        print(
+            json.dumps(
+                {
+                    "ok": False,
+                    "phase": "learn",
+                    "mode": mode,
+                    "game": args.game,
+                    "url": start_url,
+                    "error": str(exc),
+                    "knowledge": str(knowledge_out) if knowledge_out else None,
+                    "hint": (
+                        "If this is Cloudflare/403, run player on a machine/network that can open "
+                        "Stake in a normal browser, or supply a provider demo URL without WAF."
+                    ),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 1
 
     out = policy.save(policy_path(args.game))
     print(

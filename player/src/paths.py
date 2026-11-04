@@ -2,14 +2,18 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "fixtures"
-POLICIES = Path("/data/policies")
-RECORDINGS = Path("/data/recordings")
-EVENTS = Path("/data/events")
-KNOWLEDGE = Path("/data/knowledge")
+
+# In Docker default is /data; locally override with DATA_ROOT=./.data
+DATA_ROOT = Path(os.environ.get("DATA_ROOT", "/data"))
+POLICIES = DATA_ROOT / "policies"
+RECORDINGS = DATA_ROOT / "recordings"
+EVENTS = DATA_ROOT / "events"
+KNOWLEDGE = DATA_ROOT / "knowledge"
 
 
 def ensure_data_dirs() -> None:

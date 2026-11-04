@@ -19,6 +19,14 @@ from model_client import ModelClient
 from observe import page_observation
 from policy import PlayPolicy
 
+class LearnError(RuntimeError):
+    """Learning failed; may still carry partial GameKnowledge for debugging."""
+
+    def __init__(self, message: str, knowledge: GameKnowledge | None = None) -> None:
+        super().__init__(message)
+        self.knowledge = knowledge
+
+
 SYSTEM_PROMPT = """You are Blue Wave Player — a careful game-exploration agent.
 You receive a browser screenshot and a list of interactive elements for a DEMO slot/casino game UI.
 Your job across many iterations: learn how to operate the interface and document features.
@@ -173,6 +181,30 @@ def _policy_from_knowledge(knowledge: GameKnowledge) -> PlayPolicy:
     )
 
 
+def _looks_like_bot_wall(page: Page) -> str | None:
+    """Return a reason if the page is a WAF/captcha wall instead of the game."""
+    title = (page.title() or "").lower()
+    body = ""
+    try:
+        body = (page.inner_text("body") or "").lower()
+    except Exception:  # noqa: BLE001
+        pass
+    url = page.url.lower()
+    markers = (
+        "just a moment",
+        "attention required",
+        "security verification",
+        "verify you are human",
+        "cf-challenge",
+        "cloudflare",
+        "performing security verification",
+    )
+    blob = f"{title}\n{body}\n{url}"
+    if any(m in blob for m in markers):
+        return "Blocked by Cloudflare/bot verification — game UI is not reachable from this network"
+    return None
+
+
 def learn_with_model(
     page: Page,
     *,
@@ -190,8 +222,36 @@ def learn_with_model(
         model=client.model,
     )
 
+    wall = _looks_like_bot_wall(page)
+    if wall:
+        knowledge.hypotheses.append(wall)
+        knowledge.iteration_log.append(
+            {
+                "iteration": 0,
+                "thought": wall,
+                "decision": {"action": "note"},
+                "exec": {"ok": False, "error": wall},
+                "url": page.url,
+                "title": page.title(),
+            }
+        )
+        raise LearnError(wall, knowledge)
+
     for i in range(1, iterations + 1):
         observation = page_observation(page)
+        wall = _looks_like_bot_wall(page)
+        if wall:
+            knowledge.hypotheses.append(wall)
+            knowledge.iteration_log.append(
+                {
+                    "iteration": i,
+                    "thought": wall,
+                    "decision": {"action": "note"},
+                    "exec": {"ok": False, "error": wall},
+                }
+            )
+            raise LearnError(wall, knowledge)
+
         decision = client.chat_json(
             system=SYSTEM_PROMPT,
             user_text=_build_user_prompt(knowledge, observation, i, iterations),
@@ -237,5 +297,8 @@ def learn_with_model(
             {"iteration": "final", "thought": decision.get("thought"), "decision": decision}
         )
 
-    policy = _policy_from_knowledge(knowledge)
+    try:
+        policy = _policy_from_knowledge(knowledge)
+    except RuntimeError as exc:
+        raise LearnError(str(exc), knowledge) from exc
     return policy, knowledge
