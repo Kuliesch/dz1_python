@@ -8,3 +8,5 @@ venv/
 .mypy_cache/
 output/
 *.log
+player/data/
+*.webm
