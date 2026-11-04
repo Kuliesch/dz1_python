@@ -142,6 +142,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     learn = sub.add_parser("learn", help="Discover controls and save a play policy")
     add_common(learn)
+    learn.add_argument("--learn-spins", type=int, default=3, help="Practice spins while learning")
     learn.set_defaults(func=cmd_learn)
 
     record = sub.add_parser("record", help="Play with a learned policy and record video")
