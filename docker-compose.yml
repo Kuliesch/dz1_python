@@ -27,5 +27,19 @@ services:
     profiles:
       - load
 
+  player:
+    build: ./player
+    container_name: bluewave-player
+    environment:
+      GAME_URL: ${GAME_URL:-}
+    volumes:
+      - player_data:/data
+    profiles:
+      - play
+    # Optional: point at a permitted demo instead of the mock fixture
+    # environment:
+    #   GAME_URL: https://example.com/demo
+
 volumes:
   bluewave_pgdata:
+  player_data:
