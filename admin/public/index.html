@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blue Wave Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      Blue Wave
+      <span>Admin console</span>
+    </div>
+    <nav class="nav" id="nav">
+      <button type="button" data-view="overview" class="active">Overview</button>
+      <button type="button" data-view="providers">Providers</button>
+      <button type="button" data-view="games">Games</button>
+      <button type="button" data-view="media">Media</button>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="view-title">Overview</h1>
+        <p id="view-subtitle">Каталог, записи player та змонтовані огляди</p>
+      </div>
+      <div id="health" class="status-pill">checking…</div>
+    </div>
+    <div id="content"></div>
+    <div id="error" class="error" hidden></div>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
