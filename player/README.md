@@ -21,7 +21,7 @@ docker compose --profile play run --rm player python -m main learn --game mock-s
 docker compose --profile play run --rm player python -m main record --game mock-slot --max-spins 15
 ```
 
-Вихід (volume `player_data`):
+Вихід (volume `media_data`):
 
 - `/data/policies/<game>.json` — навчена політика
 - `/data/recordings/<game>.webm` — відео для `mounter`

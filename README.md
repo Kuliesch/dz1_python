@@ -9,25 +9,22 @@ Video-first мережа AI-оглядів слотів з власним кат
 | `db/` | Postgres: `providers` + `games` |
 | `loader/` | Збір провайдерів/ігор з датами релізів |
 | `player/` | Learn → play in browser → record video |
+| `mounter/` | Монтаж запису → review MP4 |
 | `docs/blue-wave/` | Концепт, Stage 0, архітектура |
 
 ## Швидкий старт
 
 ```bash
-# 1) каталог
+# каталог
 docker compose up -d --build db
 docker compose --profile load run --rm loader
 
-# 2) навчитись грати + записати відео (mock slot)
+# геймплей + монтаж
 docker compose --profile play run --rm player
+docker compose --profile mount run --rm mounter
 ```
 
-Окремі фази player:
-
-```bash
-docker compose --profile play run --rm player python -m main learn --game mock-slot
-docker compose --profile play run --rm player python -m main record --game mock-slot --max-spins 15
-```
+Результат монтажу: volume `media_data` → `/data/mounted/<game>_review.mp4`.
 
 ## Документація
 
@@ -35,3 +32,4 @@ docker compose --profile play run --rm player python -m main record --game mock-
 - [`docs/blue-wave/STAGE0_KICK_FEASIBILITY.md`](docs/blue-wave/STAGE0_KICK_FEASIBILITY.md)
 - [`docs/blue-wave/ARCHITECTURE.md`](docs/blue-wave/ARCHITECTURE.md)
 - [`player/README.md`](player/README.md)
+- [`mounter/README.md`](mounter/README.md)

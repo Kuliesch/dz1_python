@@ -33,13 +33,18 @@ services:
     environment:
       GAME_URL: ${GAME_URL:-}
     volumes:
-      - player_data:/data
+      - media_data:/data
     profiles:
       - play
-    # Optional: point at a permitted demo instead of the mock fixture
-    # environment:
-    #   GAME_URL: https://example.com/demo
+
+  mounter:
+    build: ./mounter
+    container_name: bluewave-mounter
+    volumes:
+      - media_data:/data
+    profiles:
+      - mount
 
 volumes:
   bluewave_pgdata:
-  player_data:
+  media_data:
