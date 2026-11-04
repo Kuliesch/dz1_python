@@ -189,18 +189,19 @@ def _looks_like_bot_wall(page: Page) -> str | None:
         body = (page.inner_text("body") or "").lower()
     except Exception:  # noqa: BLE001
         pass
-    url = page.url.lower()
-    markers = (
+    # Strong signals: interstitial titles / Turnstile copy.
+    # Do NOT treat a mere mention of "cloudflare" in game help text as a wall.
+    strong = (
         "just a moment",
         "attention required",
-        "security verification",
         "verify you are human",
-        "cf-challenge",
-        "cloudflare",
         "performing security verification",
+        "checking your browser before accessing",
     )
-    blob = f"{title}\n{body}\n{url}"
-    if any(m in blob for m in markers):
+    blob = f"{title}\n{body[:2000]}"
+    if any(m in blob for m in strong):
+        return "Blocked by Cloudflare/bot verification — game UI is not reachable from this network"
+    if "cf-challenge" in (page.content() or "").lower() and "spin" not in body:
         return "Blocked by Cloudflare/bot verification — game UI is not reachable from this network"
     return None
 

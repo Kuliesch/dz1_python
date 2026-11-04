@@ -2,62 +2,49 @@
 
 Контейнер Blue Wave: **йому передають гру**, він відкриває браузер і **за багато ітерацій вчиться в неї грати** за допомогою моделі (API key).
 
+## Зараз: mock-first (option 3)
+
+Поки Stake за Cloudflare, пілот **Lucky Baker** вчиться на локальному fixture:
+
+- `fixtures/lucky_baker_mock.html`
+- target: `targets/lucky-baker-mock.env` (`GAME_URL=mock://lucky-baker`, `PLAYER_USE_MOCK=1`)
+
+Live URL залишається в `targets/lucky-baker.env` для пізнішого прогону.
+
 ## Ідея
 
-1. Ззовні передається гра: `--game <slug>` + `--url <demo>` (або `GAME_URL`).
-2. Контейнер відкриває Chromium (Playwright).
-3. Vision/chat-модель (OpenAI-compatible) багато разів:
-   - дивиться скріншот + інтерактивний DOM;
-   - клікає / чекає / нотує;
-   - досліджує інтерфейс, фічі, контролі (spin, bet, info, autoplay…).
-4. Зберігає:
-   - `/data/knowledge/<game>.json` — журнал дослідження;
-   - `/data/policies/<game>.json` — політика для подальшого запису.
-5. `record` відтворює політику і пише відео для `mounter`.
-
-API-ключ **не комітиться** — лише env.
-
-## Перша гра (пілот)
-
-| Поле | Значення |
-| --- | --- |
-| Slug | `lucky-baker` |
-| Provider | Jeellee |
-| URL | https://stake.com/casino/games/jeellee-lucky-baker |
-| Config | [`targets/lucky-baker.env`](targets/lucky-baker.env) |
+1. Передається гра: `--game` + `--url` / `GAME_URL` / `mock://…`
+2. Chromium (Playwright)
+3. Модель досліджує UI/фічі/контролі ітераціями
+4. Пише `/data/knowledge/<game>.json` + `/data/policies/<game>.json`
+5. `record` → `/data/recordings/<game>.webm`
 
 ## Env
 
 | Змінна | Опис |
 | --- | --- |
-| `PLAYER_API_KEY` | API ключ моделі (обов’язково для `--mode model`) |
-| `PLAYER_API_BASE` | База OpenAI-compatible API (default `https://api.openai.com/v1`) |
-| `PLAYER_MODEL` | Модель (default `gpt-4o-mini`) |
-| `GAME_SLUG` | Ідентифікатор гри (default `lucky-baker`) |
-| `GAME_URL` | URL гри |
-| `PLAYER_LEARN_ITERATIONS` | Кількість ітерацій навчання (default 30) |
+| `PLAYER_API_KEY` | API ключ моделі |
+| `PLAYER_API_BASE` | OpenAI-compatible base |
+| `PLAYER_MODEL` | default `gpt-4o-mini` |
+| `PLAYER_USE_MOCK` | `1` → локальний fixture |
+| `GAME_SLUG` | default `lucky-baker` |
+| `GAME_URL` | `mock://lucky-baker` або live URL |
 
-## Запуск
+## Запуск (mock)
 
 ```bash
-export PLAYER_API_KEY=sk-...
-set -a && source player/targets/lucky-baker.env && set +a
+export PLAYER_API_KEY=...
+set -a && source .env && source player/targets/lucky-baker-mock.env && set +a
+export DATA_ROOT=./.data PYTHONPATH=player/src
 
-docker compose --profile play run --rm player \
-  python -m main learn --game "$GAME_SLUG" --url "$GAME_URL" --mode model --iterations 30
-
-docker compose --profile play run --rm player \
-  python -m main record --game "$GAME_SLUG" --url "$GAME_URL" --max-spins 20
+python3 -m main learn --game "$GAME_SLUG" --url "$GAME_URL" --mode model --iterations 15
+python3 -m main record --game "$GAME_SLUG" --url "$GAME_URL" --max-spins 12
 ```
-
-Без ключа `--mode auto` падає назад на heuristic (лише для mock fixture / простих DOM).
-
-Stake з datacenter IP часто відповідає **403** — для живого прогону потрібен доступний мережевий шлях і, ймовірно, сесія/age-gate. Див. [`targets/README.md`](targets/README.md).
 
 ## Режими learn
 
 | `--mode` | Поведінка |
 | --- | --- |
-| `auto` | model якщо є `PLAYER_API_KEY`, інакше heuristic |
-| `model` | тільки модель (потрібен ключ) |
-| `heuristic` | швидкий DOM fallback без моделі |
+| `auto` | model якщо є ключ, інакше heuristic |
+| `model` | тільки модель |
+| `heuristic` | DOM fallback без моделі |

@@ -28,17 +28,28 @@ from player import play_with_policy
 from policy import PlayPolicy
 
 
-def mock_url() -> str:
-    return FIXTURES.joinpath("mock_slot.html").resolve().as_uri()
+def mock_url(game_slug: str | None = None) -> str:
+    """Local HTML fixtures for offline learn (option 3 — no Cloudflare/Stake)."""
+    slug = (game_slug or "").strip().lower()
+    if slug in {"lucky-baker", "jeellee-lucky-baker"}:
+        path = FIXTURES / "lucky_baker_mock.html"
+    else:
+        path = FIXTURES / "mock_slot.html"
+    return path.resolve().as_uri()
 
 
-def resolve_url(url: str | None) -> str:
-    if url:
-        return url
-    env_url = os.environ.get("GAME_URL")
-    if env_url:
-        return env_url
-    return mock_url()
+def resolve_url(url: str | None, game_slug: str | None = None) -> str:
+    raw = url or os.environ.get("GAME_URL")
+    use_mock = os.environ.get("PLAYER_USE_MOCK", "").strip() in {"1", "true", "yes"}
+    if raw:
+        if raw.startswith("mock://") or use_mock:
+            slug = raw.removeprefix("mock://") if raw.startswith("mock://") else (game_slug or "mock-slot")
+            return mock_url(slug)
+        return raw
+    if use_mock:
+        return mock_url(game_slug)
+    return mock_url(game_slug)
+
 
 
 def policy_path(game_slug: str) -> Path:
@@ -51,7 +62,7 @@ def knowledge_path(game_slug: str) -> Path:
 
 def cmd_learn(args: argparse.Namespace) -> int:
     ensure_data_dirs()
-    start_url = resolve_url(args.url)
+    start_url = resolve_url(args.url, game_slug=args.game)
     mode = args.mode
     if mode == "auto":
         mode = "model" if api_key() else "heuristic"
@@ -141,8 +152,8 @@ def cmd_record(args: argparse.Namespace) -> int:
             f"No policy for '{args.game}'. Run learn first with the game URL and PLAYER_API_KEY."
         )
     policy = PlayPolicy.load(path)
-    if args.url:
-        policy.start_url = args.url
+    if args.url or os.environ.get("PLAYER_USE_MOCK"):
+        policy.start_url = resolve_url(args.url, game_slug=args.game)
     if args.max_spins:
         policy.max_spins = args.max_spins
 

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lucky Baker · Blue Wave Mock</title>
+  <style>
+    :root { color-scheme: dark; font-family: Georgia, "Times New Roman", serif; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      background:
+        radial-gradient(900px 420px at 20% 0%, rgba(214, 137, 64, 0.25), transparent 55%),
+        linear-gradient(180deg, #1a1008 0%, #0b1210 55%, #070b0c 100%);
+      color: #f4e8d8;
+    }
+    .cabinet {
+      width: min(980px, 96vw); border: 1px solid #5b4632; border-radius: 20px;
+      padding: 22px 24px 20px; background: #16110d; box-shadow: 0 24px 70px rgba(0,0,0,.5);
+    }
+    .top {
+      display: flex; justify-content: space-between; gap: 12px; align-items: start;
+      margin-bottom: 10px;
+    }
+    h1 { margin: 0; font-size: 1.7rem; letter-spacing: .03em; }
+    .meta { opacity: .75; margin-top: 6px; font-size: .92rem; }
+    .tag {
+      border: 1px solid #6a5138; background: #241910; border-radius: 999px;
+      padding: 6px 10px; font-size: .78rem; color: #d9c3a5;
+    }
+    .reels {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+      margin: 18px 0 18px; min-height: 150px;
+    }
+    .reel {
+      border: 1px solid #6a5138; border-radius: 14px; display: grid; place-items: center;
+      font-size: 2rem; background: #241910; transition: transform .15s ease;
+    }
+    .reel.spinning { transform: translateY(-4px); opacity: .7; }
+    .hud {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .badge {
+      padding: 7px 11px; border-radius: 999px; background: #241910; border: 1px solid #6a5138;
+      font-size: .9rem;
+    }
+    .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    button {
+      appearance: none; border: 0; border-radius: 999px; padding: 12px 18px;
+      font: inherit; font-weight: 700; cursor: pointer;
+    }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    #spin { background: #e2a45a; color: #1a1008; padding: 14px 28px; }
+    #bet-minus, #bet-plus, #autoplay, #info { background: #2a2118; color: #f4e8d8; border: 1px solid #6a5138; }
+    #panel {
+      display: none; margin-top: 14px; border: 1px solid #6a5138; border-radius: 14px;
+      padding: 12px 14px; background: #1c1510; font-size: .92rem; line-height: 1.45;
+    }
+    #panel.open { display: block; }
+    #log { margin-top: 14px; font-family: ui-monospace, monospace; font-size: .85rem; opacity: .85; min-height: 1.2em; }
+  </style>
+</head>
+<body>
+  <main class="cabinet" data-game="lucky-baker-mock" data-provider="jeellee">
+    <div class="top">
+      <div>
+        <h1>Lucky Baker</h1>
+        <div class="meta">Local training mock for Blue Wave <code>player</code> · Jeellee-inspired · no real-money play</div>
+      </div>
+      <div class="tag">MOCK · offline learn target</div>
+    </div>
+
+    <div class="reels" id="reels" aria-label="reels" data-region="reels">
+      <div class="reel" data-reel="0">🥐</div>
+      <div class="reel" data-reel="1">🥖</div>
+      <div class="reel" data-reel="2">⭐</div>
+      <div class="reel" data-reel="3">🧁</div>
+      <div class="reel" data-reel="4">🍞</div>
+    </div>
+
+    <div class="hud" data-region="hud">
+      <div class="badge">Balance: <span id="balance" data-testid="balance">1000</span></div>
+      <div class="badge">Bet: <span id="bet" data-testid="bet">1</span></div>
+      <div class="badge">Spins: <span id="spins" data-testid="spins">0</span></div>
+      <div class="badge">Last win: <span id="last-win" data-testid="last-win">0</span></div>
+      <div class="controls">
+        <button id="bet-minus" data-testid="bet-minus" data-action="bet-minus" type="button">−</button>
+        <button id="bet-plus" data-testid="bet-plus" data-action="bet-plus" type="button">+</button>
+        <button id="info" data-testid="info" data-action="info" type="button">Info</button>
+        <button id="autoplay" data-testid="autoplay" data-action="autoplay" type="button">Auto</button>
+        <button id="spin" data-testid="spin" data-action="spin" type="button">SPIN</button>
+      </div>
+    </div>
+
+    <div id="panel" data-testid="info-panel">
+      <strong>Features (mock):</strong> bakery symbols, star wild, 5-reel cascade-style settle,
+      adjustable bet, optional short autoplay. Offline training fixture for the player agent
+      when the live casino page is unavailable.
+    </div>
+    <div id="log" data-testid="log">Ready · explore controls, then spin</div>
+  </main>
+
+  <script>
+    const symbols = ["🥐", "🥖", "🍞", "🧁", "⭐", "🧈", "🫖"];
+    const reels = [...document.querySelectorAll(".reel")];
+    const balanceEl = document.getElementById("balance");
+    const betEl = document.getElementById("bet");
+    const spinsEl = document.getElementById("spins");
+    const winEl = document.getElementById("last-win");
+    const logEl = document.getElementById("log");
+    const panel = document.getElementById("panel");
+    const spinBtn = document.getElementById("spin");
+    const autoBtn = document.getElementById("autoplay");
+    let balance = 1000;
+    let bet = 1;
+    let spins = 0;
+    let busy = false;
+    let autoplay = false;
+
+    function setLog(msg) { logEl.textContent = msg; }
+    function sync() {
+      balanceEl.textContent = String(balance);
+      betEl.textContent = String(bet);
+      spinsEl.textContent = String(spins);
+    }
+
+    document.getElementById("bet-minus").addEventListener("click", () => {
+      if (busy) return;
+      bet = Math.max(1, bet - 1);
+      sync();
+      setLog(`Bet set to ${bet}`);
+    });
+    document.getElementById("bet-plus").addEventListener("click", () => {
+      if (busy) return;
+      bet = Math.min(20, bet + 1);
+      sync();
+      setLog(`Bet set to ${bet}`);
+    });
+    document.getElementById("info").addEventListener("click", () => {
+      panel.classList.toggle("open");
+      setLog(panel.classList.contains("open") ? "Opened info panel" : "Closed info panel");
+    });
+    autoBtn.addEventListener("click", () => {
+      autoplay = !autoplay;
+      autoBtn.textContent = autoplay ? "Auto●" : "Auto";
+      setLog(autoplay ? "Autoplay armed (mock)" : "Autoplay off");
+      if (autoplay && !busy) spin();
+    });
+
+    async function spin() {
+      if (busy) return;
+      if (balance < bet) { setLog("Out of balance"); autoplay = false; autoBtn.textContent = "Auto"; return; }
+      busy = true;
+      spinBtn.disabled = true;
+      balance -= bet;
+      spins += 1;
+      sync();
+      setLog("Spinning…");
+      reels.forEach((r) => r.classList.add("spinning"));
+      await new Promise((r) => setTimeout(r, 650 + Math.random() * 450));
+      const outcome = reels.map((reel) => {
+        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+        reel.textContent = symbol;
+        reel.classList.remove("spinning");
+        return symbol;
+      });
+      const counts = outcome.reduce((acc, s) => (acc[s] = (acc[s] || 0) + 1, acc), {});
+      const best = Math.max(...Object.values(counts));
+      const win = best >= 3 ? best * bet : 0;
+      balance += win;
+      winEl.textContent = String(win);
+      sync();
+      setLog(win > 0 ? `Win ${win} on ${outcome.join(" ")}` : `No win · ${outcome.join(" ")}`);
+      window.__lastSpin = { outcome, win, balance, spins, bet, at: Date.now() };
+      busy = false;
+      spinBtn.disabled = false;
+      if (autoplay) setTimeout(spin, 500);
+    }
+
+    spinBtn.addEventListener("click", spin);
+    window.__mockSlot = { spin, getState: () => ({ balance, bet, spins, busy, autoplay }) };
+  </script>
+</body>
+</html>

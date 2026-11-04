@@ -31,13 +31,14 @@ services:
     build: ./player
     container_name: bluewave-player
     environment:
-      # Default first pilot target; override via .env / shell
-      GAME_URL: ${GAME_URL:-https://stake.com/casino/games/jeellee-lucky-baker}
+      # Default: local Lucky Baker mock (PLAYER_USE_MOCK=1). Set PLAYER_USE_MOCK=0 + live GAME_URL for Stake.
+      GAME_URL: ${GAME_URL:-mock://lucky-baker}
       GAME_SLUG: ${GAME_SLUG:-lucky-baker}
+      PLAYER_USE_MOCK: ${PLAYER_USE_MOCK:-1}
       PLAYER_API_KEY: ${PLAYER_API_KEY:-}
       PLAYER_API_BASE: ${PLAYER_API_BASE:-https://api.openai.com/v1}
       PLAYER_MODEL: ${PLAYER_MODEL:-gpt-4o-mini}
-      PLAYER_LEARN_ITERATIONS: ${PLAYER_LEARN_ITERATIONS:-30}
+      PLAYER_LEARN_ITERATIONS: ${PLAYER_LEARN_ITERATIONS:-15}
     volumes:
       - media_data:/data
     profiles:

@@ -1,31 +1,34 @@
 # Player targets
 
-Список ігор, які передаються в контейнер `player`.
+| Slug | Mode | URL / fixture | Статус |
+| --- | --- | --- | --- |
+| `lucky-baker` | **mock (default now)** | `fixtures/lucky_baker_mock.html` | Offline learn — option 3 |
+| `lucky-baker` | live | https://stake.com/casino/games/jeellee-lucky-baker | Blocked by Cloudflare from agent network |
 
-| Slug | URL | Статус |
-| --- | --- | --- |
-| `lucky-baker` | https://stake.com/casino/games/jeellee-lucky-baker | Перша ціль (пілот) |
-
-## Запуск навчання
+## Mock learn (рекомендовано зараз)
 
 ```bash
-export PLAYER_API_KEY=...          # обов'язково для model mode
-export PLAYER_API_BASE=https://api.openai.com/v1
-export PLAYER_MODEL=gpt-4o-mini
+export PLAYER_API_KEY=...
+set -a && source .env && source player/targets/lucky-baker-mock.env && set +a
+export DATA_ROOT=./.data PYTHONPATH=player/src
 
-set -a && source player/targets/lucky-baker.env && set +a
-
-docker compose --profile play run --rm player \
-  python -m main learn \
-    --game "$GAME_SLUG" \
-    --url "$GAME_URL" \
-    --mode model \
-    --iterations "${PLAYER_LEARN_ITERATIONS:-30}"
+python3 -m main learn --game "$GAME_SLUG" --url "$GAME_URL" --mode model --iterations 15
+python3 -m main record --game "$GAME_SLUG" --url "$GAME_URL" --max-spins 12
 ```
 
-## Відомі обмеження (Lucky Baker @ Stake)
+Або через compose:
 
-- Сторінка може вимагати акаунт / geo / age-gate — model agent клікає лише явні demo/accept контроли.
-- Datacenter IP часто отримує **403** від Stake (WAF) — для реального прогону потрібен доступний мережевий шлях (локальний браузер / residential / VPN у дозволеній юрисдикції).
-- Не автоматизуємо депозити / real-money cashier.
-- RTP і точну дату релізу треба фактчекнути з провайдера перед публікацією огляду.
+```bash
+PLAYER_USE_MOCK=1 GAME_URL=mock://lucky-baker \
+  docker compose --profile play run --rm player \
+  python -m main learn --game lucky-baker --url mock://lucky-baker --mode model --iterations 15
+```
+
+## Live Stake (коли буде доступна мережа/браузер)
+
+```bash
+set -a && source player/targets/lucky-baker.env && set +a
+# PLAYER_USE_MOCK must be unset
+docker compose --profile play run --rm player \
+  python -m main learn --game "$GAME_SLUG" --url "$GAME_URL" --mode model --iterations 30
+```

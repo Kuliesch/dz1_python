@@ -17,5 +17,5 @@ RUN mkdir -p /data/policies /data/recordings /data/events /data/knowledge
 
 VOLUME ["/data"]
 
-# Default pilot: Lucky Baker on Stake (override GAME_URL / GAME_SLUG / PLAYER_API_KEY)
-CMD ["sh", "-c", "python -m main learn --game \"${GAME_SLUG:-lucky-baker}\" --url \"${GAME_URL}\" --mode auto --iterations \"${PLAYER_LEARN_ITERATIONS:-30}\""]
+# Default pilot: Lucky Baker local mock (set PLAYER_USE_MOCK=0 + live GAME_URL for Stake)
+CMD ["sh", "-c", "python -m main learn --game \"${GAME_SLUG:-lucky-baker}\" --url \"${GAME_URL:-mock://lucky-baker}\" --mode auto --iterations \"${PLAYER_LEARN_ITERATIONS:-15}\""]
