@@ -1,0 +1,31 @@
+services:
+  db:
+    build: ./db
+    container_name: bluewave-db
+    environment:
+      POSTGRES_DB: bluewave
+      POSTGRES_USER: bluewave
+      POSTGRES_PASSWORD: bluewave
+    ports:
+      - "5432:5432"
+    volumes:
+      - bluewave_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bluewave -d bluewave"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  loader:
+    build: ./loader
+    container_name: bluewave-loader
+    environment:
+      DATABASE_URL: postgresql://bluewave:bluewave@db:5432/bluewave
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles:
+      - load
+
+volumes:
+  bluewave_pgdata:

@@ -1,18 +1,31 @@
-# dz1_python
+# Blue Wave
 
-Репозиторій містить навчальні скрипти та внутрішні матеріали продуктового пілота **Blue Wave**.
+Video-first мережа AI-оглядів слотів з власним каталогом ігор.
 
-## Blue Wave
+## Структура
 
-Video-first мережа AI-оглядів слотів з власним каталогом. Перший експеримент задуманий як органічний канал Kick → сайт (20–30 коротких оглядів).
+| Шлях | Призначення |
+| --- | --- |
+| `db/` | Postgres-контейнер: таблиці `providers` і `games` |
+| `loader/` | Контейнер збору провайдерів/ігор з датами релізів |
+| `docs/blue-wave/` | Концепт, Stage 0 Kick feasibility, архітектура |
 
-Документація:
+## Швидкий старт (каталог)
 
-- [`docs/blue-wave/CONCEPT.md`](docs/blue-wave/CONCEPT.md) — концепція та roadmap v0.1
-- [`docs/blue-wave/STAGE0_KICK_FEASIBILITY.md`](docs/blue-wave/STAGE0_KICK_FEASIBILITY.md) — Stage 0 feasibility (GO/NO-GO)
+```bash
+docker compose up -d --build db
+docker compose --profile load run --rm loader
+```
 
-**Статус Stage 0:** вихідна гіпотеза Kick-upload — **NO-GO**; потрібен півот формату/майданчика перед виробництвом.
+Перевірка:
 
-## Інше
+```bash
+docker compose exec db psql -U bluewave -d bluewave -c \
+  "SELECT p.name, g.name, g.release_date FROM games g JOIN providers p ON p.id = g.provider_id ORDER BY g.release_date DESC NULLS LAST;"
+```
 
-- `Pyhton1.py` — numpy homework script (історичний файл у `main`)
+## Документація
+
+- [`docs/blue-wave/CONCEPT.md`](docs/blue-wave/CONCEPT.md) — продуктова концепція v0.1
+- [`docs/blue-wave/STAGE0_KICK_FEASIBILITY.md`](docs/blue-wave/STAGE0_KICK_FEASIBILITY.md) — Kick GO/NO-GO
+- [`docs/blue-wave/ARCHITECTURE.md`](docs/blue-wave/ARCHITECTURE.md) — технічна структура
