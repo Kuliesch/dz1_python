@@ -105,6 +105,29 @@
           "volatility": "high"
         }
       ]
+    },
+    {
+      "slug": "jeellee",
+      "name": "Jeellee",
+      "website_url": null,
+      "country_code": null,
+      "games": [
+        {
+          "slug": "lucky-baker",
+          "name": "Lucky Baker",
+          "release_date": "2026-01-01",
+          "game_type": "slot",
+          "rtp_percent": null,
+          "volatility": "high",
+          "demo_url": "https://stake.com/casino/games/jeellee-lucky-baker",
+          "metadata": {
+            "pilot": true,
+            "pilot_order": 1,
+            "distribution_page": "https://stake.com/casino/games/jeellee-lucky-baker",
+            "notes": "First Blue Wave player target. RTP/release to be fact-checked from provider docs before publish."
+          }
+        }
+      ]
     }
   ]
 }

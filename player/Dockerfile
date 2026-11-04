@@ -17,5 +17,5 @@ RUN mkdir -p /data/policies /data/recordings /data/events /data/knowledge
 
 VOLUME ["/data"]
 
-# Pass game via GAME_SLUG/GAME_URL and API key via PLAYER_API_KEY
-CMD ["python", "-m", "main", "learn", "--game", "mock-slot", "--mode", "auto", "--iterations", "15"]
+# Default pilot: Lucky Baker on Stake (override GAME_URL / GAME_SLUG / PLAYER_API_KEY)
+CMD ["sh", "-c", "python -m main learn --game \"${GAME_SLUG:-lucky-baker}\" --url \"${GAME_URL}\" --mode auto --iterations \"${PLAYER_LEARN_ITERATIONS:-30}\""]
