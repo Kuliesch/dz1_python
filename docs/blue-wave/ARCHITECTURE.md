@@ -18,7 +18,8 @@
 Вхід:
 
 - `--game <slug>` — ідентифікатор
-- `--url` / `GAME_URL` — demo URL гри
+- `--url` / `GAME_URL` / `mock://lucky-baker` — URL або локальний fixture
+- `PLAYER_USE_MOCK=1` — offline fixture (поточний пілот)
 - `PLAYER_API_KEY` (+ опційно `PLAYER_API_BASE`, `PLAYER_MODEL`)
 
 Цикл `learn` (mode=model):
@@ -29,25 +30,24 @@
 4. Агент виконує дію, накопичує knowledge.
 5. Коли знайдено `spin` (і модель каже ready) → зберегти policy.
 
-Артефакти (`media_data`):
+**Пілот зараз:** Lucky Baker mock (`player/fixtures/lucky_baker_mock.html`), бо live Stake блокується Cloudflare з agent-мережі.
+
+Артефакти (`media_data` / локально `.data/`):
 
 | Шлях | Зміст |
 | --- | --- |
-| `/data/knowledge/<game>.json` | журнал ітерацій, фічі, контролі |
-| `/data/policies/<game>.json` | політика для record |
-| `/data/recordings/<game>.webm` | сирий геймплей |
-| `/data/events/<game>.json` | лог спінів |
-| `/data/mounted/<game>_review.mp4` | монтаж від mounter |
+| `…/knowledge/<game>.json` | журнал ітерацій, фічі, контролі |
+| `…/policies/<game>.json` | політика для record |
+| `…/recordings/<game>.webm` | сирий геймплей |
+| `…/events/<game>.json` | лог спінів |
+| `…/mounted/<game>_review.mp4` | монтаж від mounter |
 
 ```bash
 export PLAYER_API_KEY=...
-export GAME_URL=https://…/demo
+export PLAYER_USE_MOCK=1 GAME_URL=mock://lucky-baker
 
-docker compose --profile play run --rm player \
-  python -m main learn --game my-slot --url "$GAME_URL" --iterations 30
+python3 -m main learn --game lucky-baker --url mock://lucky-baker --mode model --iterations 15
 ```
-
-Без ключа `--mode auto` використовує heuristic fallback (для mock/DOM-only).
 
 ## Запуск стеку
 
