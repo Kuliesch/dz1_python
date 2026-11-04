@@ -45,6 +45,28 @@ services:
     profiles:
       - mount
 
+  admin-api:
+    build: ./admin-api
+    container_name: bluewave-admin-api
+    environment:
+      DATABASE_URL: postgresql://bluewave:bluewave@db:5432/bluewave
+      MEDIA_ROOT: /data
+    ports:
+      - "8000:8000"
+    volumes:
+      - media_data:/data
+    depends_on:
+      db:
+        condition: service_healthy
+
+  admin:
+    build: ./admin
+    container_name: bluewave-admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - admin-api
+
 volumes:
   bluewave_pgdata:
   media_data:

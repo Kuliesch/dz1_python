@@ -9,14 +9,19 @@
 | `db/` | Postgres. Каталог провайдерів і ігор у **окремих таблицях**. |
 | `loader/` | Збір провайдерів + ігор з **датами релізів** → upsert у `db`. |
 | `player/` | Браузер → **спочатку learn**, потім грає демо і **записує відео**. |
-| `mounter/` | Монтаж сирого запису → короткий review MP4 (title + disclaimer). |
-| `admin-api/` / `admin/` | *(далі)* API та веб-адмінка. |
+| `mounter/` | Монтаж сирого запису → короткий review MP4. |
+| `admin-api/` | HTTP API для адмінки (каталог + media status). |
+| `admin/` | Веб-адмінка (nginx SPA → проксі на admin-api). |
 
 ## Запуск
 
 ```bash
+# ядро: db + admin stack
+docker compose up -d --build db admin-api admin
+# UI: http://localhost:8080
+# API: http://localhost:8000/health
+
 # каталог
-docker compose up -d --build db
 docker compose --profile load run --rm loader
 
 # геймплей + монтаж (спільний volume media_data)
@@ -33,21 +38,18 @@ docker compose --profile mount run --rm mounter
 | `/data/events/<game>.json` | player | лог спінів |
 | `/data/mounted/<game>_review.mp4` | mounter | змонтований огляд |
 
+`admin-api` монтує той самий volume (read) для `/api/media`.
+
 ## Схема даних
 
 ```
 providers 1───* games
 ```
 
-- `providers` — slug, name, website, country, source/collected_at
-- `games` — provider_id, slug, name, **release_date**, rtp, volatility, demo_url, metadata JSONB
-
-## Пайплайн відео
+## Пайплайн
 
 ```
-player (learn → record) → mounter (trim/overlay) → /data/mounted/*_review.mp4
+loader → db
+player (learn→record) → mounter → mounted MP4
+admin ← admin-api ← db + media volume
 ```
-
-1. **learn** — знайти spin-контроль, виміряти темп, зберегти policy.
-2. **record** — зіграти N спінів, webm + events.
-3. **mount** — trim ~2–3 хв, burn-in title, disclaimer *Selected episodes*.
